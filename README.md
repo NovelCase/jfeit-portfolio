@@ -1,10 +1,10 @@
-## Leslie Meng's Portfolio
+## Jackie Feit's Portfolio
 
-A portfolio site for Leslie Meng, built in React and PixiJS
+A portfolio site for Jackie Feit, built in React and PixiJS
 
 ## Team
 
-Creative Lead - Leslie Meng
+Creative Lead - Jackie Feit
 
 Developers:
 - Marie Crumpton
