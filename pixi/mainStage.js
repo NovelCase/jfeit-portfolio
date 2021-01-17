@@ -3,8 +3,8 @@ const PIXI = require('pixi.js');
 const Project = require('../client/MainView');
 
 const app = new PIXI.Application({
-	transparent: false,
-	resizeTo: window,
+  transparent: false,
+  resizeTo: window,
 });
 
 app.renderer.backgroundColor = 0xb694e4;
@@ -14,69 +14,83 @@ pixiDiv.appendChild(app.view);
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
 
-let left = keyboard('ArrowLeft'),
-	up = keyboard('ArrowUp'),
-	right = keyboard('ArrowRight'),
-	down = keyboard('ArrowDown'),
-	space = keyboard(' ' || 'Spacebar');
+const mousePosition = new PIXI.Point();
 
-//Left arrow key `press` method
-left.press = () => {
-	if (app.stage.pivot.x >= window.innerWidth) {
-		app.stage.pivot.x -= window.innerWidth;
-	}
-};
-//Up
-up.press = () => {};
-//Right
-right.press = () => {
-	if (app.stage.pivot.x <= window.innerWidth * 2) {
-		app.stage.pivot.x += window.innerWidth;
-	}
-};
+app.view.addEventListener('mousewheel', (ev) => {
+  mousePosition.set(ev.clientX, ev.clientY);
+  const found = app.renderer.plugins.interaction.hitTest(
+    mousePosition,
+    app.stage
+  );
 
-function keyboard(value) {
-	let key = {};
-	key.value = value;
-	key.isDown = false;
-	key.isUp = true;
-	key.press = undefined;
-	key.release = undefined;
-	//The `downHandler`
-	key.downHandler = (event) => {
-		if (event.key === key.value) {
-			if (key.isUp && key.press) key.press();
-			key.isDown = true;
-			key.isUp = false;
-			event.preventDefault();
-		}
-	};
+  // Dispatch scroll event
+  if (found) {
+    found.emit('scroll', ev);
+  }
+});
+// let left = keyboard('ArrowLeft'),
+//   up = keyboard('ArrowUp'),
+//   right = keyboard('ArrowRight'),
+//   down = keyboard('ArrowDown'),
+//   space = keyboard(' ' || 'Spacebar');
 
-	//The `upHandler`
-	key.upHandler = (event) => {
-		if (event.key === key.value) {
-			if (key.isDown && key.release) key.release();
-			key.isDown = false;
-			key.isUp = true;
-			event.preventDefault();
-		}
-	};
+// //Left arrow key `press` method
+// left.press = () => {
+//   if (app.stage.pivot.x >= window.innerWidth) {
+//     app.stage.pivot.x -= window.innerWidth;
+//   }
+// };
+// //Up
+// up.press = () => {};
+// //Right
+// right.press = () => {
+//   if (app.stage.pivot.x <= window.innerWidth * 2) {
+//     app.stage.pivot.x += window.innerWidth;
+//   }
+// };
 
-	//Attach event listeners
-	const downListener = key.downHandler.bind(key);
-	const upListener = key.upHandler.bind(key);
+// function keyboard(value) {
+//   let key = {};
+//   key.value = value;
+//   key.isDown = false;
+//   key.isUp = true;
+//   key.press = undefined;
+//   key.release = undefined;
+//   //The `downHandler`
+//   key.downHandler = (event) => {
+//     if (event.key === key.value) {
+//       if (key.isUp && key.press) key.press();
+//       key.isDown = true;
+//       key.isUp = false;
+//       event.preventDefault();
+//     }
+//   };
 
-	window.addEventListener('keydown', downListener, false);
-	window.addEventListener('keyup', upListener, false);
+//   //The `upHandler`
+//   key.upHandler = (event) => {
+//     if (event.key === key.value) {
+//       if (key.isDown && key.release) key.release();
+//       key.isDown = false;
+//       key.isUp = true;
+//       event.preventDefault();
+//     }
+//   };
 
-	// Detach event listeners
-	key.unsubscribe = () => {
-		window.removeEventListener('keydown', downListener);
-		window.removeEventListener('keyup', upListener);
-	};
+//   //Attach event listeners
+//   const downListener = key.downHandler.bind(key);
+//   const upListener = key.upHandler.bind(key);
 
-	return key;
-}
+//   window.addEventListener('keydown', downListener, false);
+//   window.addEventListener('keyup', upListener, false);
+
+//   // Detach event listeners
+//   key.unsubscribe = () => {
+//     window.removeEventListener('keydown', downListener);
+//     window.removeEventListener('keyup', upListener);
+//   };
+
+//   return key;
+// }
 
 //place to put background colors/textures
 
@@ -108,3 +122,11 @@ function keyboard(value) {
 //e.g.
 // export let popUps = new PIXI.Container();
 // app.stage.addChild(popUps);
+
+/** Pop Ups**/
+
+export let popUps = new PIXI.Container();
+app.stage.addChild(popUps);
+
+export let text = new PIXI.Container();
+app.stage.addChild(text);
