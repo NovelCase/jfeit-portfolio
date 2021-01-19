@@ -71,12 +71,11 @@ export default class Project extends React.Component {
     });
 
     /* FIX THE TITLE CAN'T SET AS CHILD OF PROJECT SCROLL */
-    // projectTitle = this.createText(
-    //   'Projects',
-    //   { fontSize: 45 },
-    //   (projectPopUp.width / 4) * 2.43,
-    //   projectPopUp.height / 9
-    // );
+    projectTitle = new PIXI.Text('Projects', { fontSize: 45 });
+    projectTitle.visible = true; //set to false when I have click functionality
+    projectTitle.position.x = (projectPopUp.width / 4) * 2.43;
+    projectTitle.position.y = projectPopUp.height / 9;
+    PixiApp.projectContainer.addChild(projectTitle);
 
     projectScroll = PixiApp.projectContainer.addChild(
       new Scrollbox({
