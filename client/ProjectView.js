@@ -1,22 +1,27 @@
 import React from 'react';
 import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
+import { Scrollbox } from 'pixi-scrollbox';
+import { text } from '../data';
 
 let projectPopUp;
 let projectBar;
 let projectClose;
 let projectTitle;
+let projectScroll;
 let projectDetails;
 let weatherWatcher;
 let weatherLeaf;
+let spyQL;
+let spyLeaf;
+let halloWoof;
+let hallowLeaf;
 export default class Project extends React.Component {
-  createPopUpRect(x, y) {
-    let width = (window.innerWidth / 4) * 3;
-    let height = (window.innerHeight / 4) * 3.8;
+  createPopUpRect(x, y, width, height) {
     const rect = new PIXI.Graphics();
     rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
     rect.visible = true; //set to false when I have click functionality
-    PixiApp.popUps.addChild(rect);
+    PixiApp.projectContainer.addChild(rect);
     const blur = new PIXI.filters.BlurFilter(3, 4);
     rect.filters = [blur];
     const bar = new PIXI.Graphics();
@@ -25,7 +30,7 @@ export default class Project extends React.Component {
       .drawRect(x, y, width, height / 22)
       .endFill();
     bar.visible = true; //set to false when I have click functionality
-    PixiApp.popUps.addChild(bar);
+    PixiApp.projectContainer.addChild(bar);
     const close = new PIXI.Graphics();
     close
       .beginFill(0xe5699d)
@@ -34,7 +39,7 @@ export default class Project extends React.Component {
     close.visible = true; //set to false when I have click functionality
     close.interactive = true;
     close.buttonMode = true;
-    PixiApp.popUps.addChild(close);
+    PixiApp.projectContainer.addChild(close);
     return [rect, bar, close];
   }
   createText(words, style, x, y, interactive) {
@@ -46,102 +51,242 @@ export default class Project extends React.Component {
       text.interactive = true;
       text.buttonMode = true;
     }
-    PixiApp.text.addChild(text);
+    // PixiApp.projectContainer
+    projectScroll.content.addChild(text);
     return text;
   }
-  // keyboard() {
-  //   onwheel = (event) => {
-  //     if (
-  //       app.stage.pivot.x < 0 ||
-  //       app.stage.pivot.x + (event.deltaY * 1.3 || event.deltaX * 1.3) < 0
-  //     ) {
-  //       app.stage.pivot.x = 0;
-  //     } else if (
-  //       app.stage.pivot.x > appWidth * 3 ||
-  //       app.stage.pivot.x + (event.deltaY * 1.3 || event.deltaX * 1.3) >
-  //         appWidth * 3
-  //     ) {
-  //       app.stage.pivot.x = appWidth * 3;
-  //     } else app.stage.pivot.x += event.deltaY * 1.3 || event.deltaX * 1.3;
-  //   };
-  // }
+
   componentDidMount() {
     [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
       window.innerWidth / 8,
-      (window.innerHeight / 4) * 0.1
+      (window.innerHeight / 4) * 0.1,
+      (window.innerWidth / 4) * 3,
+      (window.innerHeight / 4) * 3.8
     );
 
     projectClose.on('click', () => {
-      projectPopUp.visible = false;
-      projectBar.visible = false;
-      projectClose.visible = false;
-      projectTitle.visible = false;
+      PixiApp.projectContainer.children.forEach((child) => {
+        child.visible = false;
+      });
     });
 
-    projectTitle = this.createText(
-      'Projects',
-      { fontSize: 45 },
-      (projectPopUp.width / 4) * 2.43,
-      projectPopUp.height / 9
+    /* FIX THE TITLE CAN'T SET AS CHILD OF PROJECT SCROLL */
+    // projectTitle = this.createText(
+    //   'Projects',
+    //   { fontSize: 45 },
+    //   (projectPopUp.width / 4) * 2.43,
+    //   projectPopUp.height / 9
+    // );
+
+    projectScroll = PixiApp.projectContainer.addChild(
+      new Scrollbox({
+        boxWidth: (projectPopUp.width / 4) * 3.6,
+        boxHeight: (projectPopUp.height / 4) * 3.2,
+      })
+    );
+    projectScroll.position.set(
+      projectPopUp.width / 4.55,
+      projectPopUp.height / 5
     );
 
-    projectDetails = new PIXI.Graphics();
+    projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
     projectDetails
-      .beginFill(0x361876)
+      .beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
       .drawRect(
-        projectPopUp.width / 4.55,
-        projectPopUp.height / 5,
-        (projectPopUp.width / 4) * 3.6,
-        (projectPopUp.height / 4) * 3.2
+        0,
+        0,
+        (projectScroll.boxWidth / 2) * 1.977,
+        projectScroll.boxHeight * 2.4
       )
       .endFill();
-    projectDetails.visible = true; //set to false when I have click functionality
-    projectDetails.interactive = true;
-    projectDetails.cursor = 'all-scroll';
-    PixiApp.popUps.addChild(projectDetails);
+    projectScroll.update();
 
-    const weatherContainer = new PIXI.Container();
-    projectDetails.addChild(weatherContainer);
-    weatherContainer.interactive = true;
+    /* TEXTURES */
 
     const weatherTexture = PIXI.Texture.from(
       'siteAssets/projects/WeatherWatcher.png'
     );
-    weatherWatcher = new PIXI.Sprite(weatherTexture);
-    weatherWatcher.anchor.set(0.7);
-    weatherWatcher.position.x = projectDetails.width / 1.87;
-    weatherWatcher.position.y = projectDetails.height / 1.6;
-    weatherWatcher.scale.set(0.5);
-    weatherContainer.addChild(weatherWatcher);
-
     const leafTexture = PIXI.Texture.from('siteAssets/projects/looseLeaf.png');
-    weatherLeaf = new PIXI.Sprite(leafTexture);
-    weatherLeaf.anchor.set(1.5);
-    weatherLeaf.position.x = projectDetails.width / 0.78;
-    weatherLeaf.position.y = projectDetails.height / 0.92;
-    weatherLeaf.scale.set(2.3);
-    weatherLeaf.interactive = true;
-    weatherLeaf.buttonMode = true;
-    weatherContainer.addChild(weatherLeaf);
-    weatherLeaf.on('click', () => console.log('click and scroll'));
+    const spyTexture = PIXI.Texture.from('siteAssets/projects/SpyQL.png');
+    const woofTexture = PIXI.Texture.from('siteAssets/projects/Hallowoof.png');
 
-    // let tester = new PIXI.Graphics();
-    // tester
-    //   .beginFill(0xff0000)
-    //   .drawRect(projectDetails.width / 4, projectDetails.height / 4, 200, 200);
-    // tester.visible = true;
-    // tester.interactive = true;
-    // projectDetails.addChild(tester);
-    weatherContainer.on('scroll', (ev) => {
-      console.log(ev.wheelDelta);
-      if (ev.wheelDelta >= 4) {
-        weatherContainer.visible = false;
-      } else {
-        console.log(weatherContainer.y);
-        weatherContainer.y -= ev.wheelDelta;
-      }
-      //need to fix this so it doesn't go past certain point
-    });
+    /* WEATHER WATCHER */
+    weatherWatcher = new PIXI.Sprite(weatherTexture);
+    weatherWatcher.anchor.set(0.5);
+    weatherWatcher.position.x = (projectDetails.width / 4) * 1.1;
+    weatherWatcher.position.y = (projectDetails.height / 4) * 0.57;
+    weatherWatcher.scale.set(0.65);
+    projectScroll.content.addChild(weatherWatcher);
+
+    weatherLeaf = new PIXI.Sprite(leafTexture);
+    weatherLeaf.anchor.set(0.5);
+    weatherLeaf.position.x = (projectDetails.width / 4) * 3.1;
+    weatherLeaf.position.y = weatherWatcher.y;
+    weatherLeaf.scale.x = 3.2;
+    weatherLeaf.scale.y = 2.8;
+    projectScroll.content.addChild(weatherLeaf);
+
+    const weatherTitle = this.createText(
+      text.weatherWatcher.name,
+      { fontSize: 34 },
+      weatherLeaf.x * 0.87,
+      weatherLeaf.y * 0.3
+    );
+
+    const weatherDescription = this.createText(
+      text.weatherWatcher.description,
+      {
+        fontSize: 20,
+        wordWrap: true,
+        wordWrapWidth: projectDetails.width / 4.7,
+      },
+      weatherLeaf.x * 0.86,
+      weatherLeaf.y * 0.53
+    );
+
+    const weatherGithub = this.createText(
+      text.weatherWatcher.linkOne,
+      { fontSize: 20 },
+      weatherLeaf.x * 0.86,
+      weatherLeaf.y * 1.6,
+      true
+    );
+    weatherGithub.on('click', () =>
+      window.open(text.weatherWatcher.linkOneUrl)
+    );
+    weatherGithub.on('tap', () => window.open(text.weatherWatcher.linkOneUrl));
+
+    const weatherWalkThrough = this.createText(
+      `| ${text.weatherWatcher.linkTwo}`,
+      { fontSize: 20 },
+      weatherLeaf.x * 0.93,
+      weatherLeaf.y * 1.6,
+      true
+    );
+    weatherWalkThrough.on('click', () =>
+      window.open(text.weatherWatcher.linkTwoUrl)
+    );
+    weatherWalkThrough.on('tap', () =>
+      window.open(text.weatherWatcher.linkTwoUrl)
+    );
+
+    /* SPYQL */
+    spyQL = new PIXI.Sprite(spyTexture);
+    spyQL.anchor.set(0.5);
+    spyQL.position.x = weatherWatcher.x * 2.6;
+    spyQL.position.y = weatherLeaf.y * 3.3;
+    spyQL.scale.set(0.55);
+    projectScroll.content.addChild(spyQL);
+
+    spyLeaf = new PIXI.Sprite(leafTexture);
+    spyLeaf.anchor.set(0.5);
+    spyLeaf.position.x = weatherWatcher.x * 0.7;
+    spyLeaf.position.y = spyQL.y;
+    spyLeaf.scale.x = 3.2;
+    spyLeaf.scale.y = 2.8;
+    projectScroll.content.addChild(spyLeaf);
+
+    const spyQLTitle = this.createText(
+      text.spyQL.name,
+      { fontSize: 34 },
+      spyLeaf.x * 0.75,
+      spyLeaf.y * 0.79
+    );
+
+    const spyQLDescription = this.createText(
+      text.spyQL.description,
+      {
+        fontSize: 20,
+        wordWrap: true,
+        wordWrapWidth: projectDetails.width / 4,
+      },
+      spyLeaf.x * 0.46,
+      spyLeaf.y * 0.87
+    );
+
+    const spyQLGithub = this.createText(
+      text.spyQL.linkOne,
+      { fontSize: 20 },
+      spyLeaf.x * 0.46,
+      spyLeaf.y * 1.18,
+      true
+    );
+    spyQLGithub.on('click', () => window.open(text.spyQL.linkOneUrl));
+    spyQLGithub.on('tap', () => window.open(text.spyQL.linkOneUrl));
+
+    const spyQLWalkThrough = this.createText(
+      `| ${text.spyQL.linkTwo}`,
+      { fontSize: 20 },
+      spyLeaf.x * 0.76,
+      spyLeaf.y * 1.18,
+      true
+    );
+    spyQLWalkThrough.on('click', () => window.open(text.spyQL.linkTwoUrl));
+    spyQLWalkThrough.on('tap', () => window.open(text.spyQL.linkTwoUrl));
+
+    const spyQLDeployed = this.createText(
+      `| ${text.spyQL.linkThree}`,
+      { fontSize: 20 },
+      spyLeaf.x * 1.31,
+      spyLeaf.y * 1.18,
+      true
+    );
+    spyQLDeployed.on('click', () => window.open(text.spyQL.linkThreeUrl));
+    spyQLDeployed.on('tap', () => window.open(text.spyQL.linkThreeUrl));
+
+    /* HALLOWOOF */
+    halloWoof = new PIXI.Sprite(woofTexture);
+    halloWoof.anchor.set(0.5);
+    halloWoof.position.x = weatherWatcher.x;
+    halloWoof.position.y = weatherWatcher.y * 5.75;
+    halloWoof.scale.set(0.65);
+    projectScroll.content.addChild(halloWoof);
+
+    hallowLeaf = new PIXI.Sprite(leafTexture);
+    hallowLeaf.anchor.set(0.5);
+    hallowLeaf.position.x = weatherLeaf.x;
+    hallowLeaf.position.y = halloWoof.y;
+    hallowLeaf.scale.x = 3.2;
+    hallowLeaf.scale.y = 2.8;
+    projectScroll.content.addChild(hallowLeaf);
+
+    const halloWoofTitle = this.createText(
+      text.hallowoof.name,
+      { fontSize: 34 },
+      hallowLeaf.x * 0.9,
+      hallowLeaf.y * 0.88
+    );
+
+    const halloWoofDescription = this.createText(
+      text.hallowoof.description,
+      {
+        fontSize: 20,
+        wordWrap: true,
+        wordWrapWidth: projectDetails.width / 4,
+      },
+      hallowLeaf.x * 0.865,
+      hallowLeaf.y * 0.92
+    );
+
+    const halloWoofGithub = this.createText(
+      text.hallowoof.linkOne,
+      { fontSize: 20 },
+      hallowLeaf.x * 0.865,
+      hallowLeaf.y * 1.1,
+      true
+    );
+    halloWoofGithub.on('click', () => window.open(text.hallowoof.linkOneUrl));
+    halloWoofGithub.on('tap', () => window.open(text.hallowoof.linkOneUrl));
+
+    const halloWoofDeployed = this.createText(
+      `| ${text.hallowoof.linkTwo}`,
+      { fontSize: 20 },
+      hallowLeaf.x * 0.935,
+      hallowLeaf.y * 1.1,
+      true
+    );
+    halloWoofDeployed.on('click', () => window.open(text.hallowoof.linkTwoUrl));
+    halloWoofDeployed.on('tap', () => window.open(text.hallowoof.linkTwoUrl));
   }
   render() {
     return <div></div>;

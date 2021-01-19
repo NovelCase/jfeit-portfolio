@@ -1,6 +1,5 @@
 const { Sprite } = require('pixi.js');
 const PIXI = require('pixi.js');
-const Project = require('../client/MainView');
 
 const app = new PIXI.Application({
   transparent: false,
@@ -14,20 +13,6 @@ pixiDiv.appendChild(app.view);
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
 
-const mousePosition = new PIXI.Point();
-
-app.view.addEventListener('mousewheel', (ev) => {
-  mousePosition.set(ev.clientX, ev.clientY);
-  const found = app.renderer.plugins.interaction.hitTest(
-    mousePosition,
-    app.stage
-  );
-
-  // Dispatch scroll event
-  if (found) {
-    found.emit('scroll', ev);
-  }
-});
 // let left = keyboard('ArrowLeft'),
 //   up = keyboard('ArrowUp'),
 //   right = keyboard('ArrowRight'),
@@ -125,8 +110,5 @@ app.view.addEventListener('mousewheel', (ev) => {
 
 /** Pop Ups**/
 
-export let popUps = new PIXI.Container();
-app.stage.addChild(popUps);
-
-export let text = new PIXI.Container();
-app.stage.addChild(text);
+export let projectContainer = new PIXI.Container();
+app.stage.addChild(projectContainer);
