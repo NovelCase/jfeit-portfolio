@@ -119,12 +119,36 @@ const style = {
  * requires a texture, a width and a height
  * in WebGL the image size should preferably be a power of two
  */
-var tilingSprite = new TilingSprite(
+let wallPaperSprite = new TilingSprite(
 	wallPaper,
 	app.renderer.width,
 	app.renderer.height
 );
-app.stage.addChild(tilingSprite);
+app.stage.addChild(wallPaperSprite);
+
+//top bar
+let topBar = new PIXI.Graphics();
+topBar
+	.beginFill(0x1d0046)
+	.drawRect(0, 0, appWidth, appHeight / 15)
+	.endFill();
+app.stage.addChild(topBar);
+//top bar text
+let topBarText = new PIXI.Text('Jacqueline Feit, Software Developer', style);
+topBarText.visible = true;
+topBarText.position.x = topBar.position.x + appWidth * 0.01;
+topBarText.position.y = topBar.position.y + appHeight * 0.01;
+topBarText.style.fill = 0xffffff;
+app.stage.addChild(topBarText);
+
+//dock
+let dock = new PIXI.Graphics();
+dock
+	.beginFill(0x1d0046)
+	.drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
+	.endFill();
+app.stage.addChild(dock);
+
 //folder 1
 let folderSpriteOne = createHomeSprite(appWidth / 4, appHeight / 3.5, folder);
 folderSpriteOne.scale.set(0.25);
@@ -164,6 +188,14 @@ folderThreeText.position.y =
 	folderSpriteThree.position.y - folderSpriteThree.position.y / 40;
 app.stage.addChild(folderThreeText);
 
+//welcome sign
+let welcomeSignSprite = createHomeSprite(
+	appWidth / 1.7,
+	appHeight / 5,
+	welcomeSign
+);
+welcomeSignSprite.scale.set(0.2);
+app.stage.addChild(welcomeSignSprite);
 //define scale
 
 //create sprite function
