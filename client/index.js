@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import '../public/style.css';
+import AboutMe from './AboutMe';
 // import * as PixiApp from '../pixi/app.js';
 import Main from './MainView';
 import Project from './ProjectView';
@@ -14,6 +15,7 @@ import Project from './ProjectView';
 
 ReactDOM.render(
   <div>
+    <AboutMe />
     <Main />
     <Project />
     {/* <h1>Outside of canvas</h1> */}
