@@ -4,6 +4,7 @@ import '../public/style.css';
 import AboutMe from './AboutMe';
 // import * as PixiApp from '../pixi/app.js';
 import Main from './MainView';
+import Project from './ProjectView';
 // import socket from "socket.io-client";
 
 // const clientSocket = socket(window.location.origin);
@@ -13,11 +14,11 @@ import Main from './MainView';
 // });
 
 ReactDOM.render(
-	<div>
-		<AboutMe />
-		<Main />
-
-		{/* <h1>Outside of canvas</h1> */}
-	</div>,
-	document.getElementById('app')
+  <div>
+    <AboutMe />
+    <Main />
+    <Project />
+    {/* <h1>Outside of canvas</h1> */}
+  </div>,
+  document.getElementById('app')
 );
