@@ -1,5 +1,5 @@
 {
-	"name": "lmeng-portfolio",
+	"name": "jfeit-portfolio",
 	"version": "1.0.0",
 	"description": "A portfolio site built with React and PixiJS",
 	"main": "server/index.js",
