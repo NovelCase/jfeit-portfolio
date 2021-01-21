@@ -91,9 +91,7 @@ function createHomeSprite(x, y, texture, type) {
 	return sprite;
 }
 
-const wallPaper = PIXI.Texture.from(
-	'/siteAssets/wallpaper/BackgroundTexture.png'
-);
+const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
 const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
 const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
 const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
@@ -107,18 +105,6 @@ const style = {
 	fontWeight: 'bold',
 };
 
-// let wallPaperSprite = createHomeSprite(
-// 	appWidth / 2,
-// 	appHeight / 2 + appHeight / 20,
-// 	wallPaper
-// );
-// wallPaperSprite.width = appWidth;
-// wallPaperSprite.height = appHeight - appHeight / 20;
-
-/* create a tiling sprite ...
- * requires a texture, a width and a height
- * in WebGL the image size should preferably be a power of two
- */
 let wallPaperSprite = new TilingSprite(
 	wallPaper,
 	app.renderer.width,
@@ -148,6 +134,15 @@ dock
 	.drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
 	.endFill();
 app.stage.addChild(dock);
+
+//icons
+
+let githubSprite = createHomeSprite(
+	appWidth / 4 + 0.2,
+	appHeight / 1.02,
+	github
+);
+app.stage.addChild(githubSprite);
 
 //folder 1
 let folderSpriteOne = createHomeSprite(appWidth / 4, appHeight / 3.5, folder);
@@ -190,12 +185,13 @@ app.stage.addChild(folderThreeText);
 
 //welcome sign
 let welcomeSignSprite = createHomeSprite(
-	appWidth / 1.7,
+	appWidth / 1.2,
 	appHeight / 5,
 	welcomeSign
 );
 welcomeSignSprite.scale.set(0.2);
 app.stage.addChild(welcomeSignSprite);
+
 //define scale
 
 //create sprite function
