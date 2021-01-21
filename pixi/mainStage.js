@@ -1,7 +1,11 @@
 const { Sprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 const Project = require('../client/MainView');
+const About = require('../client/AboutMe');
 
+const route = {
+	'About Me': About,
+};
 const app = new PIXI.Application({
 	transparent: false,
 	resizeTo: window,
@@ -10,9 +14,92 @@ const app = new PIXI.Application({
 app.renderer.backgroundColor = 0xb694e4;
 let pixiDiv = document.getElementById('pixi');
 pixiDiv.appendChild(app.view);
+export let stage = new PIXI.Container();
 
+let ticker = PIXI.Ticker.shared;
+
+ticker.autoStart = false;
+
+ticker.start();
+ticker.add(function (time) {
+	app.renderer.render(stage);
+});
+let startclick;
+const pinkFolder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
+export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
+function createItem(x, y, texture, name) {
+	// create a sprite
+	const item = new PIXI.Container();
+	stage.addChild(item);
+	// make sprite interactive
+	item.interactive = true;
+	// make hand appear on rollover
+	item.buttonMode = true;
+	// center anchor point
+	// item.anchor.set(0.5);
+	// setup events
+	item
+		// events for drag start
+		.on('mousedown', onDragStart)
+		.on('touchstart', onDragStart)
+		// events for drag end
+		.on('mouseup', onDragEnd)
+		// .on('mouseupoutside', onDragEnd)
+		.on('touchend', onDragEnd)
+		// .on('touchendoutside', onDragEnd)
+		// events for drag move
+		.on('mousemove', onDragMove)
+		.on('touchmove', onDragMove);
+
+	// move the sprite to its designated position
+	item.position.x = x;
+	item.position.y = y;
+	const content = new PIXI.Sprite(texture);
+	item.addChild(content);
+	content.anchor.set(0.5);
+
+	const text = new PIXI.Text(name);
+	item.addChild(text);
+	return item;
+}
+function onDragStart(event) {
+	// store a reference to the data
+	// the reason for this is because of multitouch
+	// we want to track the movement of this particular touch
+	this.data = event.data;
+	this.alpha = 0.5;
+	this.dragging = true;
+	startclick = this.data.getLocalPosition(this.parent);
+}
+function onDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		About.openLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+
+function onDragMove() {
+	if (this.dragging) {
+		const newPosition = this.data.getLocalPosition(this.parent);
+		this.position.x = Math.max(0, newPosition.x);
+		this.position.x = Math.min(this.position.x, appWidth);
+		this.position.y = Math.max(0, newPosition.y);
+		this.position.y = Math.min(newPosition.y, appHeight);
+	}
+}
 
 let left = keyboard('ArrowLeft'),
 	up = keyboard('ArrowUp'),
