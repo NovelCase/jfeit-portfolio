@@ -4,18 +4,7 @@ import * as PIXI from 'pixi.js';
 import { Scrollbox } from 'pixi-scrollbox';
 import { text } from '../data';
 
-let projectPopUp;
-let projectBar;
-let projectClose;
-let projectTitle;
 let projectScroll;
-let projectDetails;
-let weatherWatcher;
-let weatherLeaf;
-let spyQL;
-let spyLeaf;
-let halloWoof;
-let hallowLeaf;
 export default class Project extends React.Component {
   createPopUpRect(x, y, width, height) {
     const rect = new PIXI.Graphics();
@@ -42,6 +31,20 @@ export default class Project extends React.Component {
     PixiApp.projectContainer.addChild(close);
     return [rect, bar, close];
   }
+  createSprite(texture, x, y, scaleX, scaleY) {
+    const sprite = new PIXI.Sprite(texture);
+    sprite.anchor.set(0.5);
+    sprite.position.x = x;
+    sprite.position.y = y;
+    if (scaleY) {
+      sprite.scale.x = scaleX;
+      sprite.scale.y = scaleY;
+    } else {
+      sprite.scale.set(scaleX);
+    }
+    projectScroll.content.addChild(sprite);
+    return sprite;
+  }
   createText(words, style, x, y, interactive) {
     const text = new PIXI.Text(words, style);
     text.visible = true; //set to false when I have click functionality
@@ -51,13 +54,12 @@ export default class Project extends React.Component {
       text.interactive = true;
       text.buttonMode = true;
     }
-    // PixiApp.projectContainer
     projectScroll.content.addChild(text);
     return text;
   }
 
   componentDidMount() {
-    [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
+    let [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
       window.innerWidth / 8,
       (window.innerHeight / 4) * 0.1,
       (window.innerWidth / 4) * 3,
@@ -71,7 +73,7 @@ export default class Project extends React.Component {
     });
 
     /* FIX THE TITLE CAN'T SET AS CHILD OF PROJECT SCROLL */
-    projectTitle = new PIXI.Text('Projects', { fontSize: 45 });
+    let projectTitle = new PIXI.Text('Projects', { fontSize: 45 });
     projectTitle.visible = true; //set to false when I have click functionality
     projectTitle.position.x = (projectPopUp.width / 4) * 2.43;
     projectTitle.position.y = projectPopUp.height / 9;
@@ -88,7 +90,7 @@ export default class Project extends React.Component {
       projectPopUp.height / 5
     );
 
-    projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
+    let projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
     projectDetails
       .beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
       .drawRect(
@@ -110,20 +112,20 @@ export default class Project extends React.Component {
     const woofTexture = PIXI.Texture.from('siteAssets/projects/Hallowoof.png');
 
     /* WEATHER WATCHER */
-    weatherWatcher = new PIXI.Sprite(weatherTexture);
-    weatherWatcher.anchor.set(0.5);
-    weatherWatcher.position.x = (projectDetails.width / 4) * 1.1;
-    weatherWatcher.position.y = (projectDetails.height / 4) * 0.57;
-    weatherWatcher.scale.set(0.65);
-    projectScroll.content.addChild(weatherWatcher);
+    const weatherWatcher = this.createSprite(
+      weatherTexture,
+      (projectDetails.width / 4) * 1.1,
+      (projectDetails.height / 4) * 0.57,
+      0.65
+    );
 
-    weatherLeaf = new PIXI.Sprite(leafTexture);
-    weatherLeaf.anchor.set(0.5);
-    weatherLeaf.position.x = (projectDetails.width / 4) * 3.1;
-    weatherLeaf.position.y = weatherWatcher.y;
-    weatherLeaf.scale.x = 3.2;
-    weatherLeaf.scale.y = 2.8;
-    projectScroll.content.addChild(weatherLeaf);
+    const weatherLeaf = this.createSprite(
+      leafTexture,
+      (projectDetails.width / 4) * 3.1,
+      weatherWatcher.y,
+      3.2,
+      2.8
+    );
 
     const weatherTitle = this.createText(
       text.weatherWatcher.name,
@@ -170,20 +172,20 @@ export default class Project extends React.Component {
     );
 
     /* SPYQL */
-    spyQL = new PIXI.Sprite(spyTexture);
-    spyQL.anchor.set(0.5);
-    spyQL.position.x = weatherWatcher.x * 2.6;
-    spyQL.position.y = weatherLeaf.y * 3.3;
-    spyQL.scale.set(0.55);
-    projectScroll.content.addChild(spyQL);
+    const spyQL = this.createSprite(
+      spyTexture,
+      weatherWatcher.x * 2.6,
+      weatherLeaf.y * 3.3,
+      0.55
+    );
 
-    spyLeaf = new PIXI.Sprite(leafTexture);
-    spyLeaf.anchor.set(0.5);
-    spyLeaf.position.x = weatherWatcher.x * 0.7;
-    spyLeaf.position.y = spyQL.y;
-    spyLeaf.scale.x = 3.2;
-    spyLeaf.scale.y = 2.8;
-    projectScroll.content.addChild(spyLeaf);
+    const spyLeaf = this.createSprite(
+      leafTexture,
+      weatherWatcher.x * 0.7,
+      spyQL.y,
+      3.2,
+      2.8
+    );
 
     const spyQLTitle = this.createText(
       text.spyQL.name,
@@ -234,20 +236,20 @@ export default class Project extends React.Component {
     spyQLDeployed.on('tap', () => window.open(text.spyQL.linkThreeUrl));
 
     /* HALLOWOOF */
-    halloWoof = new PIXI.Sprite(woofTexture);
-    halloWoof.anchor.set(0.5);
-    halloWoof.position.x = weatherWatcher.x;
-    halloWoof.position.y = weatherWatcher.y * 5.75;
-    halloWoof.scale.set(0.65);
-    projectScroll.content.addChild(halloWoof);
+    const halloWoof = this.createSprite(
+      woofTexture,
+      weatherWatcher.x,
+      weatherWatcher.y * 5.75,
+      0.65
+    );
 
-    hallowLeaf = new PIXI.Sprite(leafTexture);
-    hallowLeaf.anchor.set(0.5);
-    hallowLeaf.position.x = weatherLeaf.x;
-    hallowLeaf.position.y = halloWoof.y;
-    hallowLeaf.scale.x = 3.2;
-    hallowLeaf.scale.y = 2.8;
-    projectScroll.content.addChild(hallowLeaf);
+    const hallowLeaf = this.createSprite(
+      leafTexture,
+      weatherLeaf.x,
+      halloWoof.y,
+      3.2,
+      2.8
+    );
 
     const halloWoofTitle = this.createText(
       text.hallowoof.name,
@@ -288,6 +290,7 @@ export default class Project extends React.Component {
     halloWoofDeployed.on('tap', () => window.open(text.hallowoof.linkTwoUrl));
   }
   render() {
+    console.log(PixiApp.app);
     return <div></div>;
   }
 }

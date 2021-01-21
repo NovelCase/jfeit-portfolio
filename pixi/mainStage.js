@@ -1,7 +1,7 @@
 const { Sprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 
-const app = new PIXI.Application({
+export const app = new PIXI.Application({
   transparent: false,
   resizeTo: window,
 });
@@ -13,6 +13,31 @@ pixiDiv.appendChild(app.view);
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
 
+window.addEventListener('resize', resize);
+
+const scales = {
+  1800: 1.2,
+  1600: 1,
+  1500: 0.9,
+};
+
+function resize() {
+  app.renderer.resize(window.innerWidth, window.innerHeight);
+  if (window.innerWidth < 1500) {
+    app.stage.children.forEach((child) => {
+      child.scale.x = scales[1500];
+    });
+  } else if (window.innerWidth < 1800) {
+    app.stage.children.forEach((child) => {
+      child.scale.x = scales[1600];
+    });
+  } else {
+    app.stage.children.forEach((child) => {
+      child.scale.x = scales[1800];
+    });
+  }
+}
+resize();
 // let left = keyboard('ArrowLeft'),
 //   up = keyboard('ArrowUp'),
 //   right = keyboard('ArrowRight'),
