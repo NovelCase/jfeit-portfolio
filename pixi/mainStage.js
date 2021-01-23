@@ -2,8 +2,8 @@ const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 
 export const app = new PIXI.Application({
-  transparent: false,
-  resizeTo: window,
+	transparent: false,
+	resizeTo: window,
 });
 
 const About = require('../client/AboutMe');
@@ -14,7 +14,8 @@ const route = {
 app.renderer.backgroundColor = 0x090135;
 let pixiDiv = document.getElementById('pixi');
 pixiDiv.appendChild(app.view);
-export let stage = new PIXI.Container();
+export let test = new PIXI.Container();
+app.stage.addChild(test);
 
 let ticker = PIXI.Ticker.shared;
 
@@ -32,7 +33,7 @@ export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
 function createItem(x, y, texture, name) {
 	// create a sprite
 	const item = new PIXI.Container();
-	stage.addChild(item);
+	test.addChild(item);
 	// make sprite interactive
 	item.interactive = true;
 	// make hand appear on rollover
@@ -104,28 +105,27 @@ function onDragMove() {
 window.addEventListener('resize', resize);
 
 const scales = {
-  1800: 1.2,
-  1600: 1,
-  1500: 0.9,
+	1800: 1.2,
+	1600: 1,
+	1500: 0.9,
 };
-
 
 //for scaling adjustment not on refresh
 function resize() {
-  app.renderer.resize(window.innerWidth, window.innerHeight);
-  if (window.innerWidth < 1500) {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1500];
-    });
-  } else if (window.innerWidth < 1800) {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1600];
-    });
-  } else {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1800];
-    });
-  }
+	app.renderer.resize(window.innerWidth, window.innerHeight);
+	if (window.innerWidth < 1500) {
+		app.stage.children.forEach((child) => {
+			child.scale.x = scales[1500];
+		});
+	} else if (window.innerWidth < 1800) {
+		app.stage.children.forEach((child) => {
+			child.scale.x = scales[1600];
+		});
+	} else {
+		app.stage.children.forEach((child) => {
+			child.scale.x = scales[1800];
+		});
+	}
 }
 resize();
 
@@ -171,7 +171,7 @@ topBar
 	.endFill();
 app.stage.addChild(topBar);
 //top bar text
-let topBarText = new PIXI.Text('Jacqueline Feit, Software Developer', style);
+let topBarText = new PIXI.Text('Jacqueline Feit - Software Developer', style);
 topBarText.visible = true;
 topBarText.position.x = topBar.position.x + appWidth * 0.01;
 topBarText.position.y = topBar.position.y + appHeight * 0.01;
