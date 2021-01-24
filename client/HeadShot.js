@@ -76,9 +76,9 @@ export default class HeadShot extends React.Component {
     // lightingSprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
     // PixiApp.headShotContainer.addChild(lightingSprite);
 
-    const W = (headshotPopUp.width / 2) * 2;
+    const W = headshotPopUp.width / 2;
     const H = headshotPopUp.height / 2;
-    const PAD = 1;
+    const PAD = 20;
     const resolution = 1;
     const WIDTH = W / resolution;
     const HEIGHT = H / resolution;
@@ -103,7 +103,7 @@ export default class HeadShot extends React.Component {
       lightbulb.update = updateLightBulb;
 
       const angle = Math.random() * Math.PI * 2;
-      const speed = 200.0; // px per second
+      const speed = 150.0; // px per second
       lightbulb.vx = (Math.cos(angle) * speed) / 60.0;
       lightbulb.vy = (Math.sin(angle) * speed) / 60.0;
       lightbulb.position.set(Math.random() * WIDTH, Math.random() * HEIGHT);
@@ -119,7 +119,7 @@ export default class HeadShot extends React.Component {
       return lightbulb;
     }
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 20; i++) {
       lighting.addChild(createLightBulb());
     }
 
