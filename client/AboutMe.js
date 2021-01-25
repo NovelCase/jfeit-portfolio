@@ -19,7 +19,7 @@ export default class AboutMe extends React.Component {
 		let y = 50;
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe0cffc).drawRect(x, y, width, height).endFill();
-		PixiApp.stage.addChild(aboutme);
+		PixiApp.test.addChild(aboutme);
 		aboutme.visible = false;
 		const topBar = new PIXI.Graphics();
 		topBar.beginFill(0x322174).drawRect(x, y, width, 30).endFill();
