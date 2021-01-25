@@ -1,21 +1,16 @@
+const Project = require('../client/ProjectView');
+
 const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
-
+const About = require('../client/AboutMe');
 export const app = new PIXI.Application({
 	transparent: false,
 	resizeTo: window,
 });
 
-const About = require('../client/AboutMe');
-const route = {
-  'About Me': About,
-};
-
 app.renderer.backgroundColor = 0x090135;
 let pixiDiv = document.getElementById('pixi');
 pixiDiv.appendChild(app.view);
-export let test = new PIXI.Container();
-app.stage.addChild(test);
 
 let ticker = PIXI.Ticker.shared;
 
@@ -23,87 +18,21 @@ ticker.autoStart = false;
 
 ticker.start();
 ticker.add(function (time) {
-	app.renderer.render(stage);
+	app.renderer.render(app.stage);
 });
 let startclick;
-const pinkFolder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
+export let test = new PIXI.Container();
+app.stage.addChild(test);
+
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
-export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
-function createItem(x, y, texture, name) {
-	// create a sprite
-	const item = new PIXI.Container();
-	test.addChild(item);
-	// make sprite interactive
-	item.interactive = true;
-	// make hand appear on rollover
-	item.buttonMode = true;
-	// center anchor point
-	// item.anchor.set(0.5);
-	// setup events
-	item
-		// events for drag start
-		.on('mousedown', onDragStart)
-		.on('touchstart', onDragStart)
-		// events for drag end
-		.on('mouseup', onDragEnd)
-		// .on('mouseupoutside', onDragEnd)
-		.on('touchend', onDragEnd)
-		// .on('touchendoutside', onDragEnd)
-		// events for drag move
-		.on('mousemove', onDragMove)
-		.on('touchmove', onDragMove);
-
-	// move the sprite to its designated position
-	item.position.x = x;
-	item.position.y = y;
-	const content = new PIXI.Sprite(texture);
-	item.addChild(content);
-	content.anchor.set(0.5);
-
-	const text = new PIXI.Text(name);
-	item.addChild(text);
-	return item;
-}
-function onDragStart(event) {
-	// store a reference to the data
-	// the reason for this is because of multitouch
-	// we want to track the movement of this particular touch
-	this.data = event.data;
-	this.alpha = 0.5;
-	this.dragging = true;
-	startclick = this.data.getLocalPosition(this.parent);
-}
-function onDragEnd() {
-	this.alpha = 1;
-	this.dragging = false;
-	const newPosition = this.data.getLocalPosition(this.parent);
-	console.log(this.position, newPosition);
-	if (
-		Math.abs(newPosition.x - startclick.x) < 10 &&
-		Math.abs(newPosition.y - startclick.y) < 10
-	) {
-		About.openLink();
-		this.visible = false;
-	}
-
-	startclick = null;
-	// set the interaction data to null
-	this.data = null;
-}
-
-function onDragMove() {
-	if (this.dragging) {
-		const newPosition = this.data.getLocalPosition(this.parent);
-		this.position.x = Math.max(0, newPosition.x);
-		this.position.x = Math.min(this.position.x, appWidth);
-		this.position.y = Math.max(0, newPosition.y);
-		this.position.y = Math.min(newPosition.y, appHeight);
-	}
-}
 
 window.addEventListener('resize', resize);
-
+let projFuncs = {
+	About: aboutDragEnd,
+	Projects: projDragEnd,
+	Resume: aboutDragEnd,
+};
 const scales = {
   1800: 1.2,
   1600: 1,
@@ -247,7 +176,6 @@ const style = {
   fontSize: 25,
   fontWeight: 'bold',
 };
-
 let wallPaperSprite = new TilingSprite(
   wallPaper,
   app.renderer.width,
@@ -323,43 +251,35 @@ let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
 gmailSprite.scale.set(0.25);
 
 //folder 1
-let folderSpriteOne = createHomeSprite(appWidth / 4, appHeight / 3.5, folder);
-folderSpriteOne.scale.set(0.25);
-let folderOneText = new PIXI.Text('About', style);
-folderOneText.visible = true;
-folderOneText.position.x =
-  folderSpriteOne.position.x - folderSpriteOne.position.x / 10;
-folderOneText.position.y =
-  folderSpriteOne.position.y - folderSpriteOne.position.y / 15;
-app.stage.addChild(folderOneText);
+export let folderSpriteOne = createItem(
+	appWidth / 4,
+	appHeight / 3.5,
+	folder,
+	'About'
+);
+
+// let folderOneText = new PIXI.Text('About', style);
+// folderOneText.visible = true;
+
+app.stage.addChild(folderSpriteOne);
 //folder 2
-let folderSpriteTwo = createHomeSprite(
-  appWidth / 4,
-  appHeight / 3.5 + appHeight / 4,
-  folder
+export let folderSpriteTwo = createItem(
+	appWidth / 4,
+	(appHeight / 3.5) * 2,
+	folder,
+	'Projects'
 );
-folderSpriteTwo.scale.set(0.25);
-let folderTwoText = new PIXI.Text('Projects', style);
-folderTwoText.visible = true;
-folderTwoText.position.x =
-  folderSpriteOne.position.x - folderSpriteTwo.position.x / 8;
-folderTwoText.position.y =
-  folderSpriteTwo.position.y - folderSpriteTwo.position.y / 30;
-app.stage.addChild(folderTwoText);
+
+app.stage.addChild(folderSpriteTwo);
 //folder 3
-let folderSpriteThree = createHomeSprite(
-  appWidth / 4,
-  appHeight / 3.5 + (appHeight / 4) * 2,
-  folder
+let folderSpriteThree = createItem(
+	appWidth / 4,
+	appHeight / 3.5 + (appHeight / 4) * 2,
+	folder,
+
+	'Resume'
 );
-folderSpriteThree.scale.set(0.25);
-let folderThreeText = new PIXI.Text('Resume', style);
-folderThreeText.visible = true;
-folderThreeText.position.x =
-  folderSpriteThree.position.x - folderSpriteThree.position.x / 8;
-folderThreeText.position.y =
-  folderSpriteThree.position.y - folderSpriteThree.position.y / 40;
-app.stage.addChild(folderThreeText);
+app.stage.addChild(folderSpriteThree);
 
 //welcome sign
 let welcomeSignSprite = createHomeSprite(
@@ -369,6 +289,100 @@ let welcomeSignSprite = createHomeSprite(
 );
 welcomeSignSprite.scale.set(0.2);
 app.stage.addChild(welcomeSignSprite);
+
+//export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
+function createItem(x, y, texture, name) {
+	// create a sprite
+	const item = new PIXI.Container();
+	test.addChild(item);
+	// make sprite interactive
+	item.interactive = true;
+	// make hand appear on rollover
+	item.buttonMode = true;
+	// center anchor point
+	// item.anchor.set(0.5);
+	// setup events
+	item
+		// events for drag start
+		.on('mousedown', onDragStart)
+		.on('touchstart', onDragStart)
+		// events for drag end
+		.on('mouseup', projFuncs[name])
+		// .on('mouseupoutside', onDragEnd)
+		.on('touchend', projFuncs[name])
+		// .on('touchendoutside', onDragEnd)
+		// events for drag move
+		.on('mousemove', onDragMove)
+		.on('touchmove', onDragMove);
+
+	// move the sprite to its designated position
+	item.position.x = x;
+	item.position.y = y;
+	const content = new PIXI.Sprite(texture);
+	item.addChild(content);
+	content.anchor.set(0.5);
+	content.scale.set(0.25);
+	const text = new PIXI.Text(name, style);
+	text.anchor.set(0.5);
+	text.position.x = content.position.x;
+	text.position.y = content.position.y;
+	item.addChild(text);
+	return item;
+}
+function onDragStart(event) {
+	// store a reference to the data
+	// the reason for this is because of multitouch
+	// we want to track the movement of this particular touch
+	this.data = event.data;
+	this.alpha = 0.5;
+	this.dragging = true;
+	console.log(this);
+	startclick = this.data.getLocalPosition(this.parent);
+}
+function aboutDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		About.openLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+function projDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		Project.openProjLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+
+function onDragMove() {
+	if (this.dragging) {
+		const newPosition = this.data.getLocalPosition(this.parent);
+		this.position.x = Math.max(0, newPosition.x);
+		this.position.x = Math.min(this.position.x, appWidth);
+		this.position.y = Math.max(0, newPosition.y);
+		this.position.y = Math.min(newPosition.y, appHeight);
+	}
+}
 
 //define scale
 
@@ -386,7 +400,9 @@ app.stage.addChild(welcomeSignSprite);
 
 export let projectContainer = new PIXI.Container();
 app.stage.addChild(projectContainer);
-
+projectContainer.visible = false;
+export let aboutContainer = new PIXI.Container();
+app.stage.addChild(aboutContainer);
 export let headShotContainer = new PIXI.Container();
 app.stage.addChild(headShotContainer);
 export let resumeContainer = new PIXI.Container();
