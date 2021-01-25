@@ -31,6 +31,7 @@ window.addEventListener('resize', resize);
 let projFuncs = {
 	About: aboutDragEnd,
 	Projects: projDragEnd,
+	Resume: aboutDragEnd,
 };
 const scales = {
 	1800: 1.2,
@@ -144,19 +145,14 @@ export let folderSpriteTwo = createItem(
 
 app.stage.addChild(folderSpriteTwo);
 //folder 3
-let folderSpriteThree = createHomeSprite(
+let folderSpriteThree = createItem(
 	appWidth / 4,
 	appHeight / 3.5 + (appHeight / 4) * 2,
-	folder
+	folder,
+
+	'Resume'
 );
-folderSpriteThree.scale.set(0.25);
-let folderThreeText = new PIXI.Text('Resume', style);
-folderThreeText.visible = true;
-folderThreeText.position.x =
-	folderSpriteThree.position.x - folderSpriteThree.position.x / 8;
-folderThreeText.position.y =
-	folderSpriteThree.position.y - folderSpriteThree.position.y / 40;
-app.stage.addChild(folderThreeText);
+app.stage.addChild(folderSpriteThree);
 
 //welcome sign
 let welcomeSignSprite = createHomeSprite(
@@ -280,3 +276,5 @@ app.stage.addChild(projectContainer);
 projectContainer.visible = false;
 export let aboutContainer = new PIXI.Container();
 app.stage.addChild(aboutContainer);
+export let resumeContainer = new PIXI.Container();
+app.stage.addChild(resumeContainer);
