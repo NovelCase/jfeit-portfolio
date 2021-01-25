@@ -8,7 +8,7 @@ export const openLink = () => {
 let popAbout;
 export default class AboutMe extends React.Component {
 	createPopUpRect() {
-		const aboutme = PixiApp.aboutContainer;
+		const aboutme = new PIXI.Container();
 		let width = (window.innerWidth / 5) * 4;
 		let height = window.innerHeight - 100;
 		if (window.innerWidth < 400) {
@@ -19,9 +19,7 @@ export default class AboutMe extends React.Component {
 		let y = 50;
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe0cffc).drawRect(x, y, width, height).endFill();
-		//PixiApp.aboutContainer.addChild(PixiApp.folderSpriteOne);
-		const blur = new PIXI.filters.BlurFilter(3, 4);
-		rect.filters = [blur];
+		PixiApp.stage.addChild(aboutme);
 		aboutme.visible = false;
 		const topBar = new PIXI.Graphics();
 		topBar.beginFill(0x322174).drawRect(x, y, width, 30).endFill();
@@ -34,7 +32,7 @@ export default class AboutMe extends React.Component {
 		xButton.buttonMode = true;
 		xButton.on('click', () => {
 			popAbout.visible = false;
-			PixiApp.folderSpriteOne.visible = true;
+			PixiApp.aboutFolder.visible = true;
 		});
 		aboutme.addChild(rect);
 		const apron = new PIXI.Sprite(

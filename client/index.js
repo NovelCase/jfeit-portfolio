@@ -14,11 +14,11 @@ import Project from './ProjectView';
 // });
 
 ReactDOM.render(
-  <div>
-    <AboutMe />
-    <Main />
-    <Project />
-    {/* <h1>Outside of canvas</h1> */}
-  </div>,
-  document.getElementById('app')
+	<div>
+		<Main />
+		<AboutMe />
+		<Project />
+		{/* <h1>Outside of canvas</h1> */}
+	</div>,
+	document.getElementById('app')
 );
