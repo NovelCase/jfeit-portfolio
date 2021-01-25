@@ -6,6 +6,7 @@ import AboutMe from './AboutMe';
 import Main from './MainView';
 import Project from './ProjectView';
 import HeadShot from './HeadShot';
+import Resume from './Resume';
 // import socket from "socket.io-client";
 
 // const clientSocket = socket(window.location.origin);
@@ -19,6 +20,7 @@ ReactDOM.render(
     <AboutMe />
     <Main />
     <Project />
+    <Resume />
     <HeadShot />
   </div>,
   document.getElementById('app')

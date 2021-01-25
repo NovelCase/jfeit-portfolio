@@ -7,44 +7,44 @@ export const openLink = () => {
 };
 let popAbout;
 export default class AboutMe extends React.Component {
-  createPopUpRect() {
-    const aboutme = new PIXI.Container();
-    let width = (window.innerWidth / 5) * 4;
-    let height = window.innerHeight - 100;
-    if (window.innerWidth < 400) {
-      width = window.innerWidth - 40;
-      height = window.innerHeight - 60;
-    }
-    let x = window.innerWidth / 10;
-    let y = 50;
-    const rect = new PIXI.Graphics();
-    rect.beginFill(0xe0cffc).drawRect(x, y, width, height).endFill();
-    PixiApp.test.addChild(aboutme);
-    aboutme.visible = false;
-    const topBar = new PIXI.Graphics();
-    topBar.beginFill(0x322174).drawRect(x, y, width, 30).endFill();
-    const xButton = new PIXI.Graphics();
-    xButton
-      .beginFill(0xef6a9c)
-      .drawCircle(x + 20, y + 15, 10)
-      .endFill();
-    xButton.interactive = true;
-    xButton.buttonMode = true;
-    xButton.on('click', () => {
-      popAbout.visible = false;
-      PixiApp.aboutFolder.visible = true;
-    });
-    aboutme.addChild(rect);
-    const apron = new PIXI.Sprite(
-      PIXI.Texture.from('/siteAssets/about/Apron.png')
-    );
-    const jackieNoah = new PIXI.Sprite(
-      PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
-    );
-    let violin = new PIXI.Sprite(
-      PIXI.Texture.from('/siteAssets/about/Violin.png')
-    );
-
+	createPopUpRect() {
+		const aboutme = new PIXI.Container();
+		let width = (window.innerWidth / 5) * 4;
+		let height = window.innerHeight - 100;
+		if (window.innerWidth < 400) {
+			width = window.innerWidth - 40;
+			height = window.innerHeight - 60;
+		}
+		let x = window.innerWidth / 10;
+		let y = 50;
+		const rect = new PIXI.Graphics();
+		rect.beginFill(0xe0cffc).drawRect(x, y, width, height).endFill();
+		PixiApp.test.addChild(aboutme);
+		aboutme.visible = false;
+		const topBar = new PIXI.Graphics();
+		topBar.beginFill(0x322174).drawRect(x, y, width, 30).endFill();
+		const xButton = new PIXI.Graphics();
+		xButton
+			.beginFill(0xef6a9c)
+			.drawCircle(x + 20, y + 15, 10)
+			.endFill();
+		xButton.interactive = true;
+		xButton.buttonMode = true;
+		xButton.on('click', () => {
+			popAbout.visible = false;
+			PixiApp.aboutFolder.visible = true;
+		});
+		aboutme.addChild(rect);
+		const apron = new PIXI.Sprite(
+			PIXI.Texture.from('/siteAssets/about/Apron.png')
+		);
+		const jackieNoah = new PIXI.Sprite(
+			PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
+		);
+		let violin = new PIXI.Sprite(
+			PIXI.Texture.from('/siteAssets/about/Violin.png')
+		);
+    
     apron.position.x = x + 100;
     apron.position.y = height - 150;
     apron.anchor.set(0.5);
