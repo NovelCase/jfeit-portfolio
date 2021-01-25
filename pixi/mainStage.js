@@ -189,11 +189,41 @@ app.stage.addChild(dock);
 //icons
 
 let githubSprite = createHomeSprite(
-	appWidth / 4 + 0.2,
-	appHeight / 1.02,
+	appWidth / 4 + 100,
+	appHeight / 1.1,
 	github
 );
-app.stage.addChild(githubSprite);
+
+githubSprite.on('click', () => {
+	window.open('https://github.com/jackiefeit94', '_blank');
+});
+githubSprite.on('tap', () => {
+	window.open('https://github.com/jackiefeit94', '_blank');
+});
+
+let linkedInSprite = createHomeSprite(
+	appWidth / 4 + 250,
+	appHeight / 1.1,
+	linkedIn
+);
+
+linkedInSprite.on('click', () => {
+	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
+});
+linkedInSprite.on('tap', () => {
+	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
+});
+
+let spotifySprite = createHomeSprite(
+	appWidth / 4 + 400,
+	appHeight / 1.1,
+	spotify
+);
+spotifySprite.scale.set(0.5);
+
+let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
+
+gmailSprite.scale.set(0.25);
 
 //folder 1
 let folderSpriteOne = createHomeSprite(appWidth / 4, appHeight / 3.5, folder);
@@ -259,3 +289,6 @@ app.stage.addChild(welcomeSignSprite);
 
 export let projectContainer = new PIXI.Container();
 app.stage.addChild(projectContainer);
+
+export let resumeContainer = new PIXI.Container();
+app.stage.addChild(resumeContainer);
