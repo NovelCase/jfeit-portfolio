@@ -36,7 +36,7 @@ export default class HeadShot extends React.Component {
       (window.innerHeight / 4) * 3.85
     );
 
-    headshotClose.on('click', () => {
+    headshotClose.on('pointertap', () => {
       PixiApp.headShotContainer.children.forEach((child) => {
         child.visible = false;
       });
@@ -72,13 +72,9 @@ export default class HeadShot extends React.Component {
     lighting.visible = false;
     PixiApp.headShotContainer.addChild(lighting);
 
-    // const lightingSprite = new PIXI.Sprite();
-    // lightingSprite.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-    // PixiApp.headShotContainer.addChild(lightingSprite);
-
-    const W = headshotPopUp.width / 2;
-    const H = headshotPopUp.height / 2;
-    const PAD = 20;
+    const W = headshotPopUp.width * 0.85;
+    const H = headshotPopUp.height * 0.78;
+    const PAD = 0.5;
     const resolution = 1;
     const WIDTH = W / resolution;
     const HEIGHT = H / resolution;
@@ -103,23 +99,26 @@ export default class HeadShot extends React.Component {
       lightbulb.update = updateLightBulb;
 
       const angle = Math.random() * Math.PI * 2;
-      const speed = 150.0; // px per second
+      const speed = 130.0; // px per second
       lightbulb.vx = (Math.cos(angle) * speed) / 60.0;
       lightbulb.vy = (Math.sin(angle) * speed) / 60.0;
-      lightbulb.position.set(Math.random() * WIDTH, Math.random() * HEIGHT);
 
-      const rad = 50 + Math.random() * 20;
       lightbulb.beginFill(0xf4f5e7, 0.25);
-      lightbulb.drawCircle(0, 0, rad);
+      lightbulb.drawCircle(
+        (window.innerWidth / 8) * 1.7,
+        (window.innerHeight / 4) * 0.5,
+        110
+      );
       lightbulb.endFill();
-      lightbulb.parentLayer = lighting; // <-- try comment it
+      lightbulb.parentLayer = lighting;
+      lightbulb.position.set(Math.random() * WIDTH, Math.random() * HEIGHT);
 
       lighting.addChild(lightbulb);
 
       return lightbulb;
     }
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 3; i++) {
       lighting.addChild(createLightBulb());
     }
 
