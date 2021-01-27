@@ -4,6 +4,10 @@ import * as PIXI from 'pixi.js';
 
 export default class HeadShot extends React.Component {
   createPopUpRect(x, y, width, height) {
+    if (window.innerWidth < 1050) {
+      x *= 0.5;
+      width *= 1.5;
+    }
     const rect = new PIXI.Graphics();
     rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
     rect.visible = false; //set to false when I have click functionality
@@ -11,16 +15,13 @@ export default class HeadShot extends React.Component {
     const blur = new PIXI.filters.BlurFilter(3, 4);
     rect.filters = [blur];
     const bar = new PIXI.Graphics();
-    bar
-      .beginFill(0x361876)
-      .drawRect(x, y, width, height / 22)
-      .endFill();
+    bar.beginFill(0x361876).drawRect(x, y, width, 30).endFill();
     bar.visible = false; //set to false when I have click functionality
     PixiApp.headShotContainer.addChild(bar);
     const close = new PIXI.Graphics();
     close
       .beginFill(0xe5699d)
-      .drawCircle(x * 1.16, y * 1.85, 15)
+      .drawCircle(x + 20, y + 15, 10)
       .endFill();
     close.visible = false; //set to false when I have click functionality
     close.interactive = true;
@@ -42,14 +43,41 @@ export default class HeadShot extends React.Component {
       });
     });
 
+    let stylePosition = {
+      style: { fontSize: 47, letterSpacing: 2 },
+      messageX: (headshotPopUp.width / 2) * 1.05,
+      messageY: (headshotPopUp.height / 4) * 0.33,
+      photoScale: 0.22,
+      photoX: (headshotPopUp.width / 2) * 1.55,
+      photoY: (headshotPopUp.height / 2) * 1.17,
+    };
+    if (window.outerWidth < 500) {
+      stylePosition.style.fontSize = 80;
+      stylePosition.messageX = (headshotPopUp.width / 2) * 0.4;
+      stylePosition.photoScale = 0.32;
+      stylePosition.photoX = headshotPopUp.width / 1.65;
+    } else if (window.outerWidth < 600) {
+      stylePosition.style.fontSize = 60;
+      stylePosition.messageX = (window.outerWidth / 2) * 0.85;
+      stylePosition.photoScale = 0.26;
+      stylePosition.photoX = window.outerWidth / 1.05;
+    } else if (window.outerWidth < 800) {
+      stylePosition.style.fontSize = 60;
+      stylePosition.messageX = (headshotPopUp.width / 2) * 0.5;
+      stylePosition.photoScale = 0.27;
+      stylePosition.photoX = headshotPopUp.width / 1.7;
+    } else if (window.outerWidth < 1050) {
+      stylePosition.style.fontSize = 60;
+      stylePosition.messageX = (window.outerWidth / 2) * 0.5;
+      stylePosition.photoScale = 0.3;
+      stylePosition.photoX = window.outerWidth / 2;
+    }
+
     /* TEXT */
-    const message = new PIXI.Text('Thanks for visiting!', {
-      fontSize: 47,
-      letterSpacing: 2,
-    });
+    const message = new PIXI.Text('Thanks for visiting!', stylePosition.style);
     message.visible = false; //set to false when I have click functionality
-    message.position.x = (headshotPopUp.width / 2) * 1.1;
-    message.position.y = (headshotPopUp.height / 4) * 0.33;
+    message.position.x = stylePosition.messageX;
+    message.position.y = stylePosition.messageY;
     PixiApp.headShotContainer.addChild(message);
 
     /* HEADSHOT */
@@ -57,9 +85,9 @@ export default class HeadShot extends React.Component {
     const photo = new PIXI.Sprite(headshotTexture);
     photo.visible = false;
     photo.anchor.set(0.5);
-    photo.scale.set(0.22);
-    photo.position.x = (headshotPopUp.width / 2) * 1.55;
-    photo.position.y = (headshotPopUp.height / 2) * 1.17;
+    photo.scale.set(stylePosition.photoScale);
+    photo.position.x = stylePosition.photoX;
+    photo.position.y = stylePosition.photoY;
     PixiApp.headShotContainer.addChild(photo);
 
     /* SPOTLIGHT */
@@ -107,7 +135,7 @@ export default class HeadShot extends React.Component {
       lightbulb.drawCircle(
         (window.innerWidth / 8) * 1.7,
         (window.innerHeight / 4) * 0.5,
-        110
+        headshotPopUp.width / 6
       );
       lightbulb.endFill();
       lightbulb.parentLayer = lighting;

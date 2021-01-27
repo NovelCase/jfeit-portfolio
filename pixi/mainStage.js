@@ -12,6 +12,9 @@ app.renderer.backgroundColor = 0x090135;
 let pixiDiv = document.getElementById('pixi');
 pixiDiv.appendChild(app.view);
 
+const megaContainer = new PIXI.Container();
+app.stage.addChild(megaContainer);
+
 let ticker = PIXI.Ticker.shared;
 
 ticker.autoStart = false;
@@ -22,57 +25,34 @@ ticker.add(function (time) {
 });
 let startclick;
 export let test = new PIXI.Container();
-app.stage.addChild(test);
+megaContainer.addChild(test);
 
 let appWidth = app.renderer.view.width;
 let appHeight = app.renderer.view.height;
 
-window.addEventListener('resize', resize);
+//place to put background colors/textures
+
 let projFuncs = {
   About: aboutDragEnd,
   Projects: projDragEnd,
   Resume: aboutDragEnd,
 };
-const scales = {
-  1800: 1.2,
-  1600: 1,
-  1500: 0.9,
-  1400: 0.7,
-};
 
-//for scaling adjustment not on refresh
-function resize() {
-  app.renderer.resize(window.innerWidth, window.innerHeight);
-  if (window.innerWidth < 1400) {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1400];
-    });
-  } else if (window.innerWidth < 1500) {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1500];
-    });
-  } else if (window.innerWidth < 1800) {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1600];
-    });
-  } else {
-    app.stage.children.forEach((child) => {
-      child.scale.x = scales[1800];
-    });
-  }
-}
-resize();
-
-//place to put background colors/textures
+// let scale = {
+//   github: 1,
+//   linkedIn: 1,
+//   spotify: 0.5,
+//   gmail: 0.25,
+//   welcomeSign: 0.2,
+// };
 
 //function to create homePage sprites
 function createHomeSprite(x, y, texture, type) {
   const sprite = new Sprite(texture);
-  app.stage.addChild(sprite);
   sprite.anchor.set(0.5);
   sprite.position.x = x;
   sprite.position.y = y;
-  //sprite.scale.set()
+  homeContainer.addChild(sprite);
   return sprite;
 }
 
@@ -89,29 +69,32 @@ const style = {
   fontSize: 25,
   fontWeight: 'bold',
 };
+const homeContainer = new PIXI.Container();
+megaContainer.addChild(homeContainer);
+
 let wallPaperSprite = new TilingSprite(
   wallPaper,
-  app.renderer.width,
-  app.renderer.height
+  app.renderer.view.width,
+  app.renderer.view.height
 );
-app.stage.addChild(wallPaperSprite);
+homeContainer.addChild(wallPaperSprite);
 
 //top bar
 let topBar = new PIXI.Graphics();
 topBar
   .beginFill(0x1d0046)
-  .drawRect(0, 0, appWidth, appHeight / 15)
+  .drawRect(0, 0, app.renderer.view.width, app.renderer.view.height / 15)
   .endFill();
-app.stage.addChild(topBar);
+homeContainer.addChild(topBar);
 //top bar text
 let topBarText = new PIXI.Text('Jacqueline Feit - Software Developer', style);
 topBarText.visible = true;
-topBarText.position.x = topBar.position.x + appWidth * 0.01;
-topBarText.position.y = topBar.position.y + appHeight * 0.01;
+topBarText.position.x = topBar.position.x + app.renderer.view.width * 0.01;
+topBarText.position.y = topBar.position.y + app.renderer.view.height * 0.01;
 topBarText.style.fill = 0xffffff;
 topBarText.interactive = true;
 topBarText.buttonMode = true;
-app.stage.addChild(topBarText);
+homeContainer.addChild(topBarText);
 topBarText.on('pointertap', () => {
   headShotContainer.children.forEach((child) => (child.visible = true));
 });
@@ -120,16 +103,22 @@ topBarText.on('pointertap', () => {
 let dock = new PIXI.Graphics();
 dock
   .beginFill(0x1d0046)
-  .drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
+  .drawRect(
+    app.renderer.view.width / 4,
+    app.renderer.view.height / 1.05,
+    app.renderer.view.width * 0.5,
+    app.renderer.view.height / 15
+  )
   .endFill();
-app.stage.addChild(dock);
+homeContainer.addChild(dock);
 
 //icons
 
 let githubSprite = createHomeSprite(
-  appWidth / 4 + 100,
-  appHeight / 1.1,
-  github
+  app.renderer.view.width / 4 + 100,
+  app.renderer.view.height / 1.1,
+  github,
+  'github'
 );
 
 githubSprite.on('click', () => {
@@ -140,9 +129,10 @@ githubSprite.on('tap', () => {
 });
 
 let linkedInSprite = createHomeSprite(
-  appWidth / 4 + 250,
-  appHeight / 1.1,
-  linkedIn
+  app.renderer.view.width / 4 + 250,
+  app.renderer.view.height / 1.1,
+  linkedIn,
+  'linkedIn'
 );
 
 linkedInSprite.on('click', () => {
@@ -153,20 +143,26 @@ linkedInSprite.on('tap', () => {
 });
 
 let spotifySprite = createHomeSprite(
-  appWidth / 4 + 400,
-  appHeight / 1.1,
-  spotify
+  app.renderer.view.width / 4 + 400,
+  app.renderer.view.height / 1.1,
+  spotify,
+  'spotify'
 );
 spotifySprite.scale.set(0.5);
 
-let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
+let gmailSprite = createHomeSprite(
+  app.renderer.view.width / 4 + 550,
+  app.renderer.view.height / 1.1,
+  gmail,
+  'gmail'
+);
 
 gmailSprite.scale.set(0.25);
 
 //folder 1
 export let folderSpriteOne = createItem(
-  appWidth / 4,
-  appHeight / 3.5,
+  app.renderer.view.width / 4,
+  app.renderer.view.height / 3.5,
   folder,
   'About'
 );
@@ -174,34 +170,34 @@ export let folderSpriteOne = createItem(
 // let folderOneText = new PIXI.Text('About', style);
 // folderOneText.visible = true;
 
-app.stage.addChild(folderSpriteOne);
+megaContainer.addChild(folderSpriteOne);
 //folder 2
 export let folderSpriteTwo = createItem(
-  appWidth / 4,
-  (appHeight / 3.5) * 2,
+  app.renderer.view.width / 4,
+  (app.renderer.view.height / 3.5) * 2,
   folder,
   'Projects'
 );
 
-app.stage.addChild(folderSpriteTwo);
+megaContainer.addChild(folderSpriteTwo);
 //folder 3
 let folderSpriteThree = createItem(
-  appWidth / 4,
-  appHeight / 3.5 + (appHeight / 4) * 2,
+  app.renderer.view.width / 4,
+  app.renderer.view.height / 3.5 + (app.renderer.view.height / 4) * 2,
   folder,
 
   'Resume'
 );
-app.stage.addChild(folderSpriteThree);
+megaContainer.addChild(folderSpriteThree);
 
 //welcome sign
 let welcomeSignSprite = createHomeSprite(
-  appWidth / 1.2,
-  appHeight / 5,
-  welcomeSign
+  app.renderer.view.width / 1.2,
+  app.renderer.view.height / 5,
+  welcomeSign,
+  'welcomeSign'
 );
 welcomeSignSprite.scale.set(0.2);
-app.stage.addChild(welcomeSignSprite);
 
 //export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
 function createItem(x, y, texture, name) {
@@ -291,9 +287,9 @@ function onDragMove() {
   if (this.dragging) {
     const newPosition = this.data.getLocalPosition(this.parent);
     this.position.x = Math.max(0, newPosition.x);
-    this.position.x = Math.min(this.position.x, appWidth);
+    this.position.x = Math.min(this.position.x, app.renderer.view.width);
     this.position.y = Math.max(0, newPosition.y);
-    this.position.y = Math.min(newPosition.y, appHeight);
+    this.position.y = Math.min(newPosition.y, app.renderer.view.height);
   }
 }
 
@@ -312,11 +308,62 @@ function onDragMove() {
 /** Pop Ups**/
 
 export let projectContainer = new PIXI.Container();
-app.stage.addChild(projectContainer);
+megaContainer.addChild(projectContainer);
 projectContainer.visible = false;
 export let aboutContainer = new PIXI.Container();
-app.stage.addChild(aboutContainer);
+megaContainer.addChild(aboutContainer);
 export let headShotContainer = new PIXI.Container();
-app.stage.addChild(headShotContainer);
+megaContainer.addChild(headShotContainer);
 export let resumeContainer = new PIXI.Container();
-app.stage.addChild(resumeContainer);
+megaContainer.addChild(resumeContainer);
+
+/* mobile scaling */
+// if (window.outerWidth < 400) {
+//   app.stage.children.forEach((child) => {
+//     child.scale.x += 0.5;
+//   });
+// }
+
+/* resize - web responsive*/
+window.addEventListener('resize', resize);
+
+//for scaling adjustment not on refresh
+function resize() {
+  // let resizeValue = 0.02;
+  // if (window.innerWidth < app.renderer.view.width) {
+  //   resizeValue = -0.02;
+  // }
+  let widthDiff = window.innerWidth - app.renderer.view.width;
+  let heightDiff = window.innerHeight - app.renderer.view.height;
+  let method = 'add';
+  if (window.innerWidth < app.renderer.view.width) {
+    method = 'subtract';
+    widthDiff = app.renderer.view.width - window.innerWidth;
+    heightDiff = app.renderer.view.height - window.innerHeight;
+    // resizeValue = -0.02;
+  }
+  app.renderer.resize(window.innerWidth, window.innerHeight);
+  app.stage.children.forEach((child, idx) => {
+    if (method === 'add') {
+      child.width += widthDiff;
+      child.height += heightDiff;
+      console.log(method, widthDiff, child.width, heightDiff, child.height);
+    } else {
+      child.width -= widthDiff;
+      child.height -= heightDiff;
+      console.log(method, widthDiff, child.width);
+    }
+    // child.children.forEach((innerChild, idx) => {
+    //   if (idx !== 1) {
+    //     innerChild.scale.x += resizeValue;
+    //   }
+    // });
+  });
+  // console.log(app.stage.children[1].width);
+  // app.stage.children.forEach((child, idx) => {
+  //   // child.scale.x += resizeValue;
+  //   // console.log(child.scale.x, idx);
+  //   console.log(child.width, idx);
+  // });
+}
+// resize();
