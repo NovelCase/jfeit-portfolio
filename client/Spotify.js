@@ -16,7 +16,10 @@ export default class Spotify extends React.Component {
 		this.onClickTap = this.onClickTap.bind(this);
 	}
 	componentDidMount() {
-		const spotify = PIXI.Texture.from('/siteAssets/welcome/SpotifyBW.png');
+		const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
+		const spotifyHover = PIXI.Texture.from(
+			'/siteAssets/welcome/Spotify-inverted.png'
+		);
 		const spotifySprite = new Sprite(spotify);
 		spotifyContainer.addChild(spotifySprite);
 		spotifySprite.anchor.set(0.5);
@@ -25,12 +28,17 @@ export default class Spotify extends React.Component {
 		spotifySprite.interactive = true;
 		spotifySprite.buttonMode = true;
 
-		spotifySprite.scale.set(0.5);
+		spotifySprite.scale.set(0.3);
 
-		spotifySprite.on('click', () => {
+		spotifySprite.on('pointertap', () => {
 			this.onClickTap();
 		});
-		spotifySprite.on('tap', () => this.onClickTap());
+		spotifySprite.on('pointerover', function (event) {
+			this.texture = spotifyHover;
+		});
+		spotifySprite.on('pointerout', function (event) {
+			this.texture = spotify;
+		});
 	}
 
 	onClickTap() {
@@ -51,12 +59,12 @@ export default class Spotify extends React.Component {
 			<div>
 				{this.state.visible ? (
 					<iframe
-						src='https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl'
+						src="https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl"
 						width={width / 4}
 						height={height}
 						// frameborder='0'
-						allowtransparency='true'
-						allow='encrypted-media'
+						allowtransparency="true"
+						allow="encrypted-media"
 					></iframe>
 				) : (
 					<div />
