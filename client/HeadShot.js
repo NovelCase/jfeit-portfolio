@@ -4,13 +4,15 @@ import * as PIXI from 'pixi.js';
 
 export default class HeadShot extends React.Component {
   createPopUpRect(x, y, width, height) {
-    let closeSize = { x: x + 20, y: y + 20, radius: 15 };
+    let closeSize = { x: x + 20, y: y + 16, radius: 12 };
+    let barWidth = 30;
     if (window.innerWidth < 1050) {
       x *= 0.5;
       width *= 1.5;
       closeSize.x = (width / 2) * 0.3;
       closeSize.y = (height / 4) * 0.17;
       closeSize.radius = width * 0.03;
+      barWidth = width * 0.06;
     }
     const rect = new PIXI.Graphics();
     rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
@@ -19,10 +21,7 @@ export default class HeadShot extends React.Component {
     const blur = new PIXI.filters.BlurFilter(3, 4);
     rect.filters = [blur];
     const bar = new PIXI.Graphics();
-    bar
-      .beginFill(0x361876)
-      .drawRect(x, y, width, width * 0.06)
-      .endFill();
+    bar.beginFill(0x361876).drawRect(x, y, width, barWidth).endFill();
     bar.visible = false; //set to false when I have click functionality
     PixiApp.headShotContainer.addChild(bar);
     const close = new PIXI.Graphics();
@@ -43,9 +42,9 @@ export default class HeadShot extends React.Component {
   componentDidMount() {
     let [headshotPopUp, headshotBar, headshotClose] = this.createPopUpRect(
       (window.innerWidth / 8) * 1.35,
-      (window.innerHeight / 4) * 0.1,
+      (window.innerHeight / 4) * 0.26,
       (window.innerWidth / 4) * 2.3,
-      (window.innerHeight / 4) * 3.85
+      (window.innerHeight / 4) * 3.7
     );
 
     headshotClose.on('pointertap', () => {
@@ -56,12 +55,12 @@ export default class HeadShot extends React.Component {
 
     let stylePosition = {
       style: { fontSize: 47, letterSpacing: 2 },
-      messageX: (headshotPopUp.width / 2) * 1.05,
-      messageY: (headshotPopUp.height / 4) * 0.33,
+      messageX: (headshotPopUp.width / 2) * 1.08,
+      messageY: (headshotPopUp.height / 4) * 0.46,
       photoScale: 0.22,
       photoScaley: 0.22,
       photoX: (headshotPopUp.width / 2) * 1.55,
-      photoY: (headshotPopUp.height / 2) * 1.17,
+      photoY: (headshotPopUp.height / 2) * 1.25,
     };
     if (window.outerWidth < 500) {
       stylePosition.messageX = (headshotPopUp.width / 2) * 0.4;
