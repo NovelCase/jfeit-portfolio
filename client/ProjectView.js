@@ -288,7 +288,6 @@ export default class Project extends React.Component {
 		halloWoofDeployed.on('tap', () => window.open(text.hallowoof.linkTwoUrl));
 	}
 	render() {
-		console.log(PixiApp.app);
 		return <div></div>;
 	}
 }

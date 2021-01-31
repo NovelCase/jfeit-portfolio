@@ -1,3 +1,5 @@
+const Resume = require('../client/Resume');
+
 const Project = require('../client/ProjectView');
 
 const { Sprite, TilingSprite } = require('pixi.js');
@@ -31,7 +33,7 @@ window.addEventListener('resize', resize);
 let projFuncs = {
 	About: aboutDragEnd,
 	Projects: projDragEnd,
-	Resume: aboutDragEnd,
+	Resume: resumeDragEnd,
 };
 const scales = {
 	1800: 1.2,
@@ -66,24 +68,63 @@ resize();
 //place to put background colors/textures
 
 //function to create homePage sprites
-function createHomeSprite(x, y, texture, type) {
+function createHomeSprite(x, y, texture, name) {
 	const sprite = new Sprite(texture);
 	app.stage.addChild(sprite);
 	sprite.anchor.set(0.5);
 	sprite.position.x = x;
 	sprite.position.y = y;
-	//sprite.scale.set()
+	if (name) {
+		sprite.name = name;
+		sprite.interactive = true;
+		sprite.buttonMode = true;
+		sprite
+			// events for drag start
+			.on('pointerover', socialRollover)
+			.on('pointerout', socialRollout)
+			.on('pointertap', socialClick);
+	}
+	sprite.scale.set(0.3);
 	return sprite;
+}
+function socialRollover(event) {
+	this.texture = hoverStates[this.name][1];
+}
+function socialRollout(event) {
+	this.texture = hoverStates[this.name][0];
+}
+function socialClick(event) {
+	window.open(hoverStates[this.name][2], '_blank');
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
 const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
 const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
-const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
-const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedInBW.png');
-const spotify = PIXI.Texture.from('/siteAssets/welcome/SpotifyBW.png');
-const gmail = PIXI.Texture.from('/siteAssets/welcome/GmailBW.png');
+const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
+const githubHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Github-inverted.png'
+);
+const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
+const linkedInHover = PIXI.Texture.from(
+	'/siteAssets/welcome/LinkedIn-inverted.png'
+);
+const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
+const spotifyHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Spotify-inverted.png'
+);
+const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
+const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
 
+const hoverStates = {
+	github: [github, githubHover, 'https://github.com/jackiefeit94'],
+	spotify: [spotify, spotifyHover, ''],
+	gmail: [gmail, gmailHover, 'mailto: jackiefeit94@gmail.com'],
+	linkedIn: [
+		linkedIn,
+		linkedInHover,
+		'https://www.linkedin.com/in/jackie-levine-feit/',
+	],
+};
 const style = {
 	fontFamily: 'Nunito Sans',
 	fontSize: 25,
@@ -129,39 +170,47 @@ app.stage.addChild(dock);
 let githubSprite = createHomeSprite(
 	appWidth / 4 + 100,
 	appHeight / 1.1,
-	github
+	github,
+	'github'
 );
 
-githubSprite.on('click', () => {
-	window.open('https://github.com/jackiefeit94', '_blank');
-});
-githubSprite.on('tap', () => {
-	window.open('https://github.com/jackiefeit94', '_blank');
-});
+// githubSprite.on('click', () => {
+// 	window.open('https://github.com/jackiefeit94', '_blank');
+// });
+// githubSprite.on('tap', () => {
+// 	window.open('https://github.com/jackiefeit94', '_blank');
+// });
 
 let linkedInSprite = createHomeSprite(
 	appWidth / 4 + 250,
 	appHeight / 1.1,
-	linkedIn
+	linkedIn,
+	'linkedIn'
 );
 
-linkedInSprite.on('click', () => {
-	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
-linkedInSprite.on('tap', () => {
-	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
+// linkedInSprite.on('click', () => {
+// 	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
+// });
+// linkedInSprite.on('tap', () => {
+// 	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
+// });
 
 let spotifySprite = createHomeSprite(
 	appWidth / 4 + 400,
 	appHeight / 1.1,
-	spotify
+	spotify,
+	'spotify'
 );
-spotifySprite.scale.set(0.5);
+// spotifySprite.scale.set(0.5);
 
-let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
+let gmailSprite = createHomeSprite(
+	appWidth / 4 + 550,
+	appHeight / 1.1,
+	gmail,
+	'gmail'
+);
 
-gmailSprite.scale.set(0.25);
+// gmailSprite.scale.set(0.25);
 
 //folder 1
 export let folderSpriteOne = createItem(
@@ -185,11 +234,10 @@ export let folderSpriteTwo = createItem(
 
 app.stage.addChild(folderSpriteTwo);
 //folder 3
-let folderSpriteThree = createItem(
+export let folderSpriteThree = createItem(
 	appWidth / 4,
 	appHeight / 3.5 + (appHeight / 4) * 2,
 	folder,
-
 	'Resume'
 );
 app.stage.addChild(folderSpriteThree);
@@ -217,16 +265,13 @@ function createItem(x, y, texture, name) {
 	// setup events
 	item
 		// events for drag start
-		.on('mousedown', onDragStart)
-		.on('touchstart', onDragStart)
+		.on('pointerover', onPointerMove)
+		.on('pointerout', onPointerOut)
+		.on('pointerdown', onDragStart)
 		// events for drag end
-		.on('mouseup', projFuncs[name])
-		// .on('mouseupoutside', onDragEnd)
-		.on('touchend', projFuncs[name])
-		// .on('touchendoutside', onDragEnd)
+		.on('pointerup', projFuncs[name])
 		// events for drag move
-		.on('mousemove', onDragMove)
-		.on('touchmove', onDragMove);
+		.on('pointermove', onDragMove);
 
 	// move the sprite to its designated position
 	item.position.x = x;
@@ -241,6 +286,12 @@ function createItem(x, y, texture, name) {
 	text.position.y = content.position.y;
 	item.addChild(text);
 	return item;
+}
+function onPointerMove(event) {
+	this.rotation = 120;
+}
+function onPointerOut(event) {
+	this.rotation = 0;
 }
 function onDragStart(event) {
 	// store a reference to the data
@@ -279,6 +330,23 @@ function projDragEnd() {
 		Math.abs(newPosition.y - startclick.y) < 10
 	) {
 		Project.openProjLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+function resumeDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		Resume.openResumeLink();
 		this.visible = false;
 	}
 
