@@ -1,5 +1,5 @@
 const Project = require('../client/ProjectView');
-
+const Resume = require('../client/Resume');
 const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 const About = require('../client/AboutMe');
@@ -24,14 +24,14 @@ let startclick;
 export let test = new PIXI.Container();
 app.stage.addChild(test);
 
-let appWidth = app.renderer.view.width;
-let appHeight = app.renderer.view.height;
+export let appWidth = app.renderer.view.width;
+export let appHeight = app.renderer.view.height;
 
 window.addEventListener('resize', resize);
 let projFuncs = {
 	About: aboutDragEnd,
 	Projects: projDragEnd,
-	Resume: aboutDragEnd,
+	Resume: resumeDragEnd,
 };
 const scales = {
 	1800: 1.2,
@@ -66,12 +66,14 @@ resize();
 //place to put background colors/textures
 
 //function to create homePage sprites
-function createHomeSprite(x, y, texture, type) {
+export function createHomeSprite(x, y, texture, type) {
 	const sprite = new Sprite(texture);
 	app.stage.addChild(sprite);
 	sprite.anchor.set(0.5);
 	sprite.position.x = x;
 	sprite.position.y = y;
+	sprite.interactive = true;
+	sprite.buttonMode = true;
 	//sprite.scale.set()
 	return sprite;
 }
@@ -81,7 +83,6 @@ const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
 const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
 const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
 const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedInBW.png');
-const spotify = PIXI.Texture.from('/siteAssets/welcome/SpotifyBW.png');
 const gmail = PIXI.Texture.from('/siteAssets/welcome/GmailBW.png');
 
 const style = {
@@ -152,16 +153,14 @@ linkedInSprite.on('tap', () => {
 	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
 });
 
-let spotifySprite = createHomeSprite(
-	appWidth / 4 + 400,
-	appHeight / 1.1,
-	spotify
-);
-spotifySprite.scale.set(0.5);
-
 let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
 
 gmailSprite.scale.set(0.25);
+
+gmailSprite.on('click', () => {
+	window.location.href =
+		'mailto:jackiefeit94@gmail.com?subject=Just visited your website!';
+});
 
 //folder 1
 export let folderSpriteOne = createItem(
@@ -185,7 +184,7 @@ export let folderSpriteTwo = createItem(
 
 app.stage.addChild(folderSpriteTwo);
 //folder 3
-let folderSpriteThree = createItem(
+export let folderSpriteThree = createItem(
 	appWidth / 4,
 	appHeight / 3.5 + (appHeight / 4) * 2,
 	folder,
@@ -201,6 +200,33 @@ let welcomeSignSprite = createHomeSprite(
 	welcomeSign
 );
 welcomeSignSprite.scale.set(0.2);
+//welcome sprite swing attempt
+// welcomeSignSprite.vx = 1;
+// welcomeSignSprite.vy = 1;
+
+// function gameLoop() {
+// 	//Call this `gameLoop` function on the next screen refresh
+// 	//(which happens 60 times per second)
+// 	requestAnimationFrame(gameLoop);
+
+// 	//Move the cat
+// 	// if ((welcomeSignSprite.rotation = 0.2)) {
+// 	// 	welcomeSignSprite.rotation = -0.2;
+// 	// } else welcomeSignSprite.rotation = 0.2;
+// 	if (welcomeSignSprite.rotation !== 0.5) {
+// 		welcomeSignSprite.rotation += 0.05;
+// 	}
+
+// 	// if (welcomeSignSprite.rotation === 0.05) {
+// 	// 	setTimeout(() => {
+// 	// 		welcomeSignSprite.rotation -= 0.1;
+// 	// 	}, 1000);
+// 	// }
+// }
+
+// //Start the loop
+// gameLoop();
+
 app.stage.addChild(welcomeSignSprite);
 
 //export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
@@ -287,6 +313,24 @@ function projDragEnd() {
 	this.data = null;
 }
 
+function resumeDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		Resume.openResLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+
 function onDragMove() {
 	if (this.dragging) {
 		const newPosition = this.data.getLocalPosition(this.parent);
@@ -319,4 +363,5 @@ app.stage.addChild(aboutContainer);
 export let headShotContainer = new PIXI.Container();
 app.stage.addChild(headShotContainer);
 export let resumeContainer = new PIXI.Container();
+resumeContainer.visible = false;
 app.stage.addChild(resumeContainer);

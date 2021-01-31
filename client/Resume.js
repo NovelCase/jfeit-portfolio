@@ -5,6 +5,9 @@ import { Scrollbox } from 'pixi-scrollbox';
 import { text } from '../data';
 
 let resumeScroll;
+export const openResLink = () => {
+	PixiApp.resumeContainer.visible = true;
+};
 export default class Resume extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
@@ -56,9 +59,8 @@ export default class Resume extends React.Component {
 		);
 
 		resumeClose.on('click', () => {
-			PixiApp.resumeContainer.children.forEach((child) => {
-				child.visible = false;
-			});
+			PixiApp.resumeContainer.visible = false;
+			PixiApp.folderSpriteThree.visible = true;
 		});
 
 		const resumeTexture = PIXI.Texture.from(
@@ -69,7 +71,9 @@ export default class Resume extends React.Component {
 		const resumeSprite = this.createSprite(
 			resumeTexture,
 			window.innerWidth / 2,
-			window.innerHeight / 2
+			window.innerHeight / 2 + window.innerHeight / 6,
+			0.4,
+			0.4
 		);
 	}
 
