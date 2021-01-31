@@ -2,7 +2,6 @@ import React from 'react';
 import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
 import { Scrollbox } from 'pixi-scrollbox';
-import { text } from '../data';
 
 let resumeScroll;
 export const openResLink = () => {
@@ -84,8 +83,6 @@ export default class Resume extends React.Component {
 				boxHeight: resumePopUp.height * 0.9,
 			})
 		);
-		//resumeScroll.isScrollbarHorizontal = false;
-
 		resumeScroll.position.set(
 			resumePopUp.width / 4.55,
 			resumePopUp.height / 12
@@ -100,13 +97,13 @@ export default class Resume extends React.Component {
 				window.innerWidth / 2,
 				window.innerHeight / 2,
 				resumeScroll.boxWidth / 2,
-				resumeScroll.boxHeight * 1.5
+				resumeScroll.boxHeight
 			)
 			.endFill();
 		const resumeSprite = this.createSprite(
 			resumeTexture,
 			resumeDetails.width,
-			resumeDetails.height / 2 + resumeDetails.height / 15,
+			resumeScroll.height * 1.9,
 			0.5,
 			0.5
 		);

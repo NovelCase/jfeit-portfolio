@@ -190,7 +190,7 @@ app.stage.addChild(folderSpriteOne);
 //folder 2
 export let folderSpriteTwo = createItem(
 	appWidth / 4,
-	(appHeight / 3.5) * 2,
+	(appHeight / 3.5) * 1.8,
 	folder,
 	'Projects'
 );
@@ -199,7 +199,7 @@ app.stage.addChild(folderSpriteTwo);
 //folder 3
 export let folderSpriteThree = createItem(
 	appWidth / 4,
-	appHeight / 3.5 + (appHeight / 4) * 2,
+	appHeight / 3.5 + (appHeight / 4) * 1.8,
 	folder,
 
 	'Resume'
