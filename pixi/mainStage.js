@@ -1,4 +1,5 @@
 const Project = require('../client/ProjectView');
+const Resume = require('../client/Resume');
 const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 const About = require('../client/AboutMe');
@@ -32,15 +33,15 @@ export let appHeight = app.renderer.view.height;
 //place to put background colors/textures
 
 let projFuncs = {
-  About: aboutDragEnd,
-  Projects: projDragEnd,
-  Resume: resumeDragEnd,
+	About: aboutDragEnd,
+	Projects: projDragEnd,
+	Resume: resumeDragEnd,
 };
 const scales = {
-  1800: 1.2,
-  1600: 1,
-  1500: 0.9,
-  1400: 0.7,
+	1800: 1.2,
+	1600: 1,
+	1500: 0.9,
+	1400: 0.7,
 };
 
 //function to create homePage sprites
@@ -66,13 +67,13 @@ export function createHomeSprite(x, y, texture, name) {
 	return sprite;
 }
 function socialRollover(event) {
-  this.texture = hoverStates[this.name][1];
+	this.texture = hoverStates[this.name][1];
 }
 function socialRollout(event) {
-  this.texture = hoverStates[this.name][0];
+	this.texture = hoverStates[this.name][0];
 }
 function socialClick(event) {
-  window.open(hoverStates[this.name][2], '_blank');
+	window.open(hoverStates[this.name][2], '_blank');
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
@@ -82,11 +83,11 @@ const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeNew.png');
 
 const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
 const githubHover = PIXI.Texture.from(
-  '/siteAssets/welcome/Github-inverted.png'
+	'/siteAssets/welcome/Github-inverted.png'
 );
 const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
 const linkedInHover = PIXI.Texture.from(
-  '/siteAssets/welcome/LinkedIn-inverted.png'
+	'/siteAssets/welcome/LinkedIn-inverted.png'
 );
 
 const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
@@ -104,13 +105,12 @@ const hoverStates = {
 		linkedInHover,
 		'https://www.linkedin.com/in/jackie-levine-feit/',
 	],
-
 };
 
 const style = {
-  fontFamily: 'Gloria Hallelujah',
-  fontSize: 25,
-  fontWeight: 'bold',
+	fontFamily: 'Gloria Hallelujah',
+	fontSize: 25,
+	fontWeight: 'bold',
 };
 const homeContainer = new PIXI.Container();
 megaContainer.addChild(homeContainer);
@@ -142,21 +142,21 @@ topBarText.on('pointertap', () => {
 	headShotContainer.children.forEach((child) => (child.visible = true));
 });
 topBarText.on('tap', () => {
-  headShotContainer.children.forEach((child) => (child.visible = true));
+	headShotContainer.children.forEach((child) => (child.visible = true));
 });
 
 topBarText.on('mouseover', () => {
-  topBarText.tint = 0x8034eb;
+	topBarText.tint = 0x8034eb;
 });
 topBarText.on('mouseout', () => {
-  topBarText.tint = 0xffffff;
+	topBarText.tint = 0xffffff;
 });
 //dock
 let dock = new PIXI.Graphics();
 dock
-  .beginFill(0x726980)
-  .drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
-  .endFill();
+	.beginFill(0x726980)
+	.drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
+	.endFill();
 
 homeContainer.addChild(dock);
 
@@ -210,7 +210,6 @@ export let folderSpriteThree = createItem(
 	app.renderer.view.height / 3.5 + (app.renderer.view.height / 4) * 1.8,
 	folder,
 	'Resume'
-
 );
 megaContainer.addChild(folderSpriteThree);
 
@@ -222,13 +221,13 @@ let welcomeSignSprite = createHomeSprite(
 );
 
 welcomeSignSprite.on('pointerover', () => {
-  welcomeSignSprite.tint = 0x8034eb;
-  welcomeSignSprite.rotation -= 0.4;
+	welcomeSignSprite.tint = 0x8034eb;
+	welcomeSignSprite.rotation -= 0.4;
 });
 
 welcomeSignSprite.on('pointerout', () => {
-  welcomeSignSprite.tint = 0xffffff;
-  welcomeSignSprite.rotation = 0;
+	welcomeSignSprite.tint = 0xffffff;
+	welcomeSignSprite.rotation = 0;
 });
 
 //welcome sprite swing attempt
@@ -291,13 +290,12 @@ function createItem(x, y, texture, name) {
 	text.position.y = content.position.y;
 	item.addChild(text);
 	return item;
-
 }
 function onPointerMove(event) {
-  this.rotation = 120;
+	this.rotation = 120;
 }
 function onPointerOut(event) {
-  this.rotation = 0;
+	this.rotation = 0;
 }
 function onDragStart(event) {
 	// store a reference to the data
@@ -306,14 +304,12 @@ function onDragStart(event) {
 	this.data = event.data;
 	this.alpha = 0.5;
 	this.dragging = true;
-	console.log(this);
 	startclick = this.data.getLocalPosition(this.parent);
 }
 function aboutDragEnd() {
 	this.alpha = 1;
 	this.dragging = false;
 	const newPosition = this.data.getLocalPosition(this.parent);
-	console.log(this.position, newPosition);
 	if (
 		Math.abs(newPosition.x - startclick.x) < 10 &&
 		Math.abs(newPosition.y - startclick.y) < 10
@@ -330,7 +326,6 @@ function projDragEnd() {
 	this.alpha = 1;
 	this.dragging = false;
 	const newPosition = this.data.getLocalPosition(this.parent);
-	console.log(this.position, newPosition);
 	if (
 		Math.abs(newPosition.x - startclick.x) < 10 &&
 		Math.abs(newPosition.y - startclick.y) < 10
@@ -345,21 +340,20 @@ function projDragEnd() {
 }
 
 function resumeDragEnd() {
-  this.alpha = 1;
-  this.dragging = false;
-  const newPosition = this.data.getLocalPosition(this.parent);
-  console.log(this.position, newPosition);
-  if (
-    Math.abs(newPosition.x - startclick.x) < 10 &&
-    Math.abs(newPosition.y - startclick.y) < 10
-  ) {
-    Resume.openResLink();
-    this.visible = false;
-  }
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		Resume.openResLink();
+		this.visible = false;
+	}
 
-  startclick = null;
-  // set the interaction data to null
-  this.data = null;
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
 }
 
 function onDragMove() {

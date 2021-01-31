@@ -46,11 +46,9 @@ export default class Spotify extends React.Component {
 			this.setState({ visible: false });
 			//PixiApp.app.stage.pivot.x = width * 3;
 			PixiApp.app.renderer.view.width += width / 4;
-			console.log('was visible');
 		} else {
 			this.setState({ visible: true });
 			PixiApp.app.renderer.view.width -= width / 4;
-			console.log('was not visible');
 		}
 	}
 
@@ -59,12 +57,12 @@ export default class Spotify extends React.Component {
 			<div>
 				{this.state.visible ? (
 					<iframe
-						src="https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl"
+						src='https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl'
 						width={width / 4}
 						height={height}
 						// frameborder='0'
-						allowtransparency="true"
-						allow="encrypted-media"
+						allowtransparency='true'
+						allow='encrypted-media'
 					></iframe>
 				) : (
 					<div />
