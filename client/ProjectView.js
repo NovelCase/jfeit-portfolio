@@ -6,13 +6,13 @@ import { text } from '../data';
 
 let projectScroll;
 export const openProjLink = () => {
-	PixiApp.projectContainer.visible = true;
+  PixiApp.projectContainer.visible = true;
 };
 export default class Project extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
-		rect.visible = true; //set to false when I have click functionality
+	
 		PixiApp.projectContainer.addChild(rect);
 		const blur = new PIXI.filters.BlurFilter(3, 4);
 		rect.filters = [blur];
@@ -21,20 +21,20 @@ export default class Project extends React.Component {
 			.beginFill(0x1d0046)
 			.drawRect(x, y, width, height / 22)
 			.endFill();
-		bar.visible = true; //set to false when I have click functionality
+		bar.visible = true; 
 		PixiApp.projectContainer.addChild(bar);
 		const close = new PIXI.Graphics();
 		close
 			.beginFill(0xe5699d)
-			.drawCircle(x * 1.16, y * 1.85, 15)
+			.drawCircle(x + 20, y + 15, 10)
 			.endFill();
 		close.visible = true; //set to false when I have click functionality
 		close.interactive = true;
 		close.buttonMode = true;
-		close.on('mouseover', () => {
+		close.on('pointerover', () => {
 			close.tint = 0xe3cdfe;
 		});
-		close.on('mouseout', () => {
+		close.on('pointerout', () => {
 			close.tint = 0xffffff;
 		});
 		PixiApp.projectContainer.addChild(close);
@@ -67,24 +67,19 @@ export default class Project extends React.Component {
 		return text;
 	}
 
-	componentDidMount() {
-		let [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
-			window.innerWidth / 8,
-			(window.innerHeight / 4) * 0.1,
-			(window.innerWidth / 4) * 3,
-			(window.innerHeight / 4) * 3.8
-		);
+  componentDidMount() {
+    let [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
+      window.innerWidth / 8,
+      (window.innerHeight / 4) * 0.1,
+      (window.innerWidth / 4) * 3,
+      (window.innerHeight / 4) * 3.8
+    );
 
-		projectClose.on('click', () => {
-			PixiApp.projectContainer.visible = false;
-			PixiApp.folderSpriteTwo.visible = true;
-		});
-		projectClose.on('tap', () => {
-			PixiApp.projectContainer.visible = false;
-			PixiApp.folderSpriteTwo.visible = true;
-		});
+    projectClose.on('pointertap', () => {
+      PixiApp.projectContainer.visible = false;
+      PixiApp.folderSpriteTwo.visible = true;
+    });
 
-		/* FIX THE TITLE CAN'T SET AS CHILD OF PROJECT SCROLL */
 		let projectTitle = new PIXI.Text('Projects', {
 			fontSize: 45,
 			fontFamily: 'Gloria Hallelujah',
@@ -94,30 +89,30 @@ export default class Project extends React.Component {
 		projectTitle.position.y = projectPopUp.height / 9;
 		PixiApp.projectContainer.addChild(projectTitle);
 
-		projectScroll = PixiApp.projectContainer.addChild(
-			new Scrollbox({
-				boxWidth: (projectPopUp.width / 4) * 3.6,
-				boxHeight: (projectPopUp.height / 4) * 3.2,
-			})
-		);
-		projectScroll.position.set(
-			projectPopUp.width / 4.55,
-			projectPopUp.height / 5
-		);
+    projectScroll = PixiApp.projectContainer.addChild(
+      new Scrollbox({
+        boxWidth: (projectPopUp.width / 4) * 3.6,
+        boxHeight: (projectPopUp.height / 4) * 3.2,
+      })
+    );
+    projectScroll.position.set(
+      projectPopUp.width / 4.55,
+      projectPopUp.height / 5
+    );
 
-		let projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
-		projectDetails
-			.beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
-			.drawRect(
-				0,
-				0,
-				(projectScroll.boxWidth / 2) * 1.977,
-				projectScroll.boxHeight * 2.4
-			)
-			.endFill();
-		projectScroll.update();
+    let projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
+    projectDetails
+      .beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
+      .drawRect(
+        0,
+        0,
+        (projectScroll.boxWidth / 2) * 1.977,
+        projectScroll.boxHeight * 2.4
+      )
+      .endFill();
+    projectScroll.update();
 
-		/* TEXTURES */
+    /* TEXTURES */
 
 		const weatherTexture = PIXI.Texture.from(
 			'siteAssets/projects/WeatherWatcher.png'
@@ -168,13 +163,10 @@ export default class Project extends React.Component {
 			weatherLeaf.y * 1.7,
 			true
 		);
-		weatherGithub.on('click', () =>
+		weatherGithub.on('pointertap', () =>
 			window.open(text.weatherWatcher.linkOneUrl)
 		);
-		weatherGithub.on('tap', () =>
-			window.open(`${text.weatherWatcher.linkOneUrl} `)
-		);
-
+		
 		const weatherWalkThrough = this.createText(
 			`  ${text.weatherWatcher.linkTwo}`,
 			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
@@ -182,10 +174,7 @@ export default class Project extends React.Component {
 			weatherLeaf.y * 1.7,
 			true
 		);
-		weatherWalkThrough.on('click', () =>
-			window.open(text.weatherWatcher.linkTwoUrl)
-		);
-		weatherWalkThrough.on('tap', () =>
+		weatherWalkThrough.on('pointertap', () =>
 			window.open(text.weatherWatcher.linkTwoUrl)
 		);
 
@@ -231,8 +220,7 @@ export default class Project extends React.Component {
 			spyLeaf.y * 1.2,
 			true
 		);
-		spyQLGithub.on('click', () => window.open(text.spyQL.linkOneUrl));
-		spyQLGithub.on('tap', () => window.open(text.spyQL.linkOneUrl));
+		spyQLGithub.on('pointertap', () => window.open(text.spyQL.linkOneUrl));
 
 		const spyQLWalkThrough = this.createText(
 			`${text.spyQL.linkTwo}`,
@@ -241,8 +229,7 @@ export default class Project extends React.Component {
 			spyLeaf.y * 1.2,
 			true
 		);
-		spyQLWalkThrough.on('click', () => window.open(text.spyQL.linkTwoUrl));
-		spyQLWalkThrough.on('tap', () => window.open(text.spyQL.linkTwoUrl));
+		spyQLWalkThrough.on('pointertap', () => window.open(text.spyQL.linkTwoUrl));
 
 		const spyQLDeployed = this.createText(
 			`${text.spyQL.linkThree}`,
@@ -251,8 +238,7 @@ export default class Project extends React.Component {
 			spyLeaf.y * 1.2,
 			true
 		);
-		spyQLDeployed.on('click', () => window.open(text.spyQL.linkThreeUrl));
-		spyQLDeployed.on('tap', () => window.open(text.spyQL.linkThreeUrl));
+		spyQLDeployed.on('pointertap', () => window.open(text.spyQL.linkThreeUrl));
 
 		/* HALLOWOOF */
 		const halloWoof = this.createSprite(
@@ -296,8 +282,8 @@ export default class Project extends React.Component {
 			hallowLeaf.y * 1.12,
 			true
 		);
-		halloWoofGithub.on('click', () => window.open(text.hallowoof.linkOneUrl));
-		halloWoofGithub.on('tap', () => window.open(text.hallowoof.linkOneUrl));
+		halloWoofGithub.on('pointertap', () => window.open(text.hallowoof.linkOneUrl));
+	
 
 		const halloWoofDeployed = this.createText(
 			`${text.hallowoof.linkTwo}`,
@@ -306,8 +292,8 @@ export default class Project extends React.Component {
 			hallowLeaf.y * 1.12,
 			true
 		);
-		halloWoofDeployed.on('click', () => window.open(text.hallowoof.linkTwoUrl));
-		halloWoofDeployed.on('tap', () => window.open(text.hallowoof.linkTwoUrl));
+		halloWoofDeployed.on('pointertap', () => window.open(text.hallowoof.linkTwoUrl));
+	
 	}
 	render() {
 		return <div></div>;
