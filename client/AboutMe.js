@@ -48,7 +48,7 @@ export default class AboutMe extends React.Component {
 		});
 		aboutme.addChild(rect);
 		const apron = new PIXI.Sprite(
-			PIXI.Texture.from('/siteAssets/about/Apron-1.png')
+			PIXI.Texture.from('/siteAssets/about/newApron2.png')
 		);
 		const jackieNoah = new PIXI.Sprite(
 			PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
@@ -60,7 +60,7 @@ export default class AboutMe extends React.Component {
 		apron.position.x = x + 100;
 		apron.position.y = height - 150;
 		apron.anchor.set(0.5);
-		apron.scale.set(0.1, 0.1);
+		apron.scale.set(0.5, 0.5);
 		aboutme.addChild(apron);
 		jackieNoah.position.x = width - 25;
 		jackieNoah.position.y = height - 100;
