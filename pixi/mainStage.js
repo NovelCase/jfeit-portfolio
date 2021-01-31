@@ -79,14 +79,14 @@ export function createHomeSprite(x, y, texture, type) {
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
-const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
-const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
+const folder = PIXI.Texture.from('/siteAssets/welcome/folder-inverted.png');
+const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeNew.png');
 const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
 const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedInBW.png');
 const gmail = PIXI.Texture.from('/siteAssets/welcome/GmailBW.png');
 
 const style = {
-	fontFamily: 'Nunito Sans',
+	fontFamily: 'Gloria Hallelujah',
 	fontSize: 25,
 	fontWeight: 'bold',
 };
@@ -116,11 +116,20 @@ app.stage.addChild(topBarText);
 topBarText.on('click', () => {
 	headShotContainer.children.forEach((child) => (child.visible = true));
 });
+topBarText.on('tap', () => {
+	headShotContainer.children.forEach((child) => (child.visible = true));
+});
 
+topBarText.on('mouseover', () => {
+	topBarText.tint = 0x8034eb;
+});
+topBarText.on('mouseout', () => {
+	topBarText.tint = 0xffffff;
+});
 //dock
 let dock = new PIXI.Graphics();
 dock
-	.beginFill(0x1d0046)
+	.beginFill(0xafa5b5)
 	.drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
 	.endFill();
 app.stage.addChild(dock);
@@ -162,6 +171,9 @@ gmailSprite.on('click', () => {
 		'mailto:jackiefeit94@gmail.com?subject=Just visited your website!';
 });
 
+export let spotifyContainer = new PIXI.Container();
+app.stage.addChild(spotifyContainer);
+
 //folder 1
 export let folderSpriteOne = createItem(
 	appWidth / 4,
@@ -199,7 +211,7 @@ let welcomeSignSprite = createHomeSprite(
 	appHeight / 5,
 	welcomeSign
 );
-welcomeSignSprite.scale.set(0.2);
+
 //welcome sprite swing attempt
 // welcomeSignSprite.vx = 1;
 // welcomeSignSprite.vy = 1;

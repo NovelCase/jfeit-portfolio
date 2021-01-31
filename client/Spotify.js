@@ -1,9 +1,11 @@
 import React from 'react';
 import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
+const { Sprite } = require('pixi.js');
 
 let width = PixiApp.appWidth;
 let height = PixiApp.appHeight;
+const spotifyContainer = PixiApp.spotifyContainer;
 
 export default class Spotify extends React.Component {
 	constructor() {
@@ -15,12 +17,14 @@ export default class Spotify extends React.Component {
 	}
 	componentDidMount() {
 		const spotify = PIXI.Texture.from('/siteAssets/welcome/SpotifyBW.png');
+		const spotifySprite = new Sprite(spotify);
+		spotifyContainer.addChild(spotifySprite);
+		spotifySprite.anchor.set(0.5);
+		spotifySprite.position.x = width / 4 + 400;
+		spotifySprite.position.y = height / 1.1;
+		spotifySprite.interactive = true;
+		spotifySprite.buttonMode = true;
 
-		let spotifySprite = PixiApp.createHomeSprite(
-			width / 4 + 400,
-			height / 1.1,
-			spotify
-		);
 		spotifySprite.scale.set(0.5);
 
 		spotifySprite.on('click', () => {

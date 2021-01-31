@@ -18,7 +18,7 @@ export default class Project extends React.Component {
 		rect.filters = [blur];
 		const bar = new PIXI.Graphics();
 		bar
-			.beginFill(0x361876)
+			.beginFill(0x1d0046)
 			.drawRect(x, y, width, height / 22)
 			.endFill();
 		bar.visible = true; //set to false when I have click functionality
@@ -31,6 +31,12 @@ export default class Project extends React.Component {
 		close.visible = true; //set to false when I have click functionality
 		close.interactive = true;
 		close.buttonMode = true;
+		close.on('mouseover', () => {
+			close.tint = 0xe3cdfe;
+		});
+		close.on('mouseout', () => {
+			close.tint = 0xffffff;
+		});
 		PixiApp.projectContainer.addChild(close);
 		return [rect, bar, close];
 	}
@@ -70,14 +76,19 @@ export default class Project extends React.Component {
 		);
 
 		projectClose.on('click', () => {
-			PixiApp.projectContainer.children.forEach((child) => {
-				child.visible = false;
-			});
+			PixiApp.projectContainer.visible = false;
+			PixiApp.folderSpriteTwo.visible = true;
+		});
+		projectClose.on('tap', () => {
+			PixiApp.projectContainer.visible = false;
 			PixiApp.folderSpriteTwo.visible = true;
 		});
 
 		/* FIX THE TITLE CAN'T SET AS CHILD OF PROJECT SCROLL */
-		let projectTitle = new PIXI.Text('Projects', { fontSize: 45 });
+		let projectTitle = new PIXI.Text('Projects', {
+			fontSize: 45,
+			fontFamily: 'Gloria Hallelujah',
+		});
 		projectTitle.visible = true; //set to false when I have click functionality
 		projectTitle.position.x = (projectPopUp.width / 4) * 2.43;
 		projectTitle.position.y = projectPopUp.height / 9;
@@ -133,7 +144,7 @@ export default class Project extends React.Component {
 
 		const weatherTitle = this.createText(
 			text.weatherWatcher.name,
-			{ fontSize: 34 },
+			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
 			weatherLeaf.x * 0.87,
 			weatherLeaf.y * 0.3
 		);
@@ -142,6 +153,7 @@ export default class Project extends React.Component {
 			text.weatherWatcher.description,
 			{
 				fontSize: 20,
+				fontFamily: 'Gloria Hallelujah',
 				wordWrap: true,
 				wordWrapWidth: projectDetails.width / 4.7,
 			},
@@ -151,7 +163,7 @@ export default class Project extends React.Component {
 
 		const weatherGithub = this.createText(
 			text.weatherWatcher.linkOne,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			weatherLeaf.x * 0.86,
 			weatherLeaf.y * 1.6,
 			true
@@ -163,7 +175,7 @@ export default class Project extends React.Component {
 
 		const weatherWalkThrough = this.createText(
 			`| ${text.weatherWatcher.linkTwo}`,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			weatherLeaf.x * 0.93,
 			weatherLeaf.y * 1.6,
 			true
@@ -193,7 +205,7 @@ export default class Project extends React.Component {
 
 		const spyQLTitle = this.createText(
 			text.spyQL.name,
-			{ fontSize: 34 },
+			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
 			spyLeaf.x * 0.75,
 			spyLeaf.y * 0.79
 		);
@@ -202,6 +214,7 @@ export default class Project extends React.Component {
 			text.spyQL.description,
 			{
 				fontSize: 20,
+				fontFamily: 'Gloria Hallelujah',
 				wordWrap: true,
 				wordWrapWidth: projectDetails.width / 4,
 			},
@@ -221,7 +234,7 @@ export default class Project extends React.Component {
 
 		const spyQLWalkThrough = this.createText(
 			`| ${text.spyQL.linkTwo}`,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			spyLeaf.x * 0.76,
 			spyLeaf.y * 1.18,
 			true
@@ -231,7 +244,7 @@ export default class Project extends React.Component {
 
 		const spyQLDeployed = this.createText(
 			`| ${text.spyQL.linkThree}`,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			spyLeaf.x * 1.31,
 			spyLeaf.y * 1.18,
 			true
@@ -257,7 +270,7 @@ export default class Project extends React.Component {
 
 		const halloWoofTitle = this.createText(
 			text.hallowoof.name,
-			{ fontSize: 34 },
+			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
 			hallowLeaf.x * 0.9,
 			hallowLeaf.y * 0.88
 		);
@@ -266,6 +279,7 @@ export default class Project extends React.Component {
 			text.hallowoof.description,
 			{
 				fontSize: 20,
+				fontFamily: 'Gloria Hallelujah',
 				wordWrap: true,
 				wordWrapWidth: projectDetails.width / 4,
 			},
@@ -275,7 +289,7 @@ export default class Project extends React.Component {
 
 		const halloWoofGithub = this.createText(
 			text.hallowoof.linkOne,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			hallowLeaf.x * 0.865,
 			hallowLeaf.y * 1.1,
 			true
@@ -285,7 +299,7 @@ export default class Project extends React.Component {
 
 		const halloWoofDeployed = this.createText(
 			`| ${text.hallowoof.linkTwo}`,
-			{ fontSize: 20 },
+			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
 			hallowLeaf.x * 0.935,
 			hallowLeaf.y * 1.1,
 			true
