@@ -54,7 +54,7 @@ export default class AboutMe extends React.Component {
 			PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
 		);
 		let violin = new PIXI.Sprite(
-			PIXI.Texture.from('/siteAssets/about/Violin.png')
+			PIXI.Texture.from('/siteAssets/about/Violin New.png')
 		);
 
 		apron.position.x = x + 100;
@@ -70,7 +70,7 @@ export default class AboutMe extends React.Component {
 		violin.position.x = width - 25;
 		violin.position.y = y + 100;
 		violin.anchor.set(0.5);
-
+    violin.scale.set(0.3);
 		let titleStyle = {
 			fontFamily: 'Gloria Hallelujah',
 			fontSize: 35,
@@ -94,8 +94,8 @@ export default class AboutMe extends React.Component {
 		aboutme.addChild(title);
 		const desc = new PIXI.Text(text.about.description, descriptionStyle);
 		desc.position.x = window.innerWidth / 2;
-		desc.position.y = aboutme.height / 2;
-		desc.anchor.set(0.5);
+		desc.position.y = (aboutme.height / 5) * 1.5;
+		desc.anchor.set(0.5, 0);
 		aboutme.addChild(desc);
 		aboutme.addChild(violin);
 		aboutme.addChild(topBar);

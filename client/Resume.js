@@ -2,7 +2,6 @@ import React from 'react';
 import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
 import { Scrollbox } from 'pixi-scrollbox';
-
 let resumeScroll;
 export const openResLink = () => {
 	PixiApp.resumeContainer.visible = true;
@@ -11,7 +10,7 @@ export default class Resume extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
-		rect.visible = true; //set to false when I have click functionality
+		PixiApp.resumeContainer.visible = false;
 		PixiApp.resumeContainer.addChild(rect);
 		const blur = new PIXI.filters.BlurFilter(3, 4);
 		rect.filters = [blur];
@@ -65,11 +64,7 @@ export default class Resume extends React.Component {
 			(window.innerHeight / 4) * 3.8
 		);
 
-		resumeClose.on('click', () => {
-			PixiApp.resumeContainer.visible = false;
-			PixiApp.folderSpriteThree.visible = true;
-		});
-		resumeClose.on('tap', () => {
+		resumeClose.on('pointertap', () => {
 			PixiApp.resumeContainer.visible = false;
 			PixiApp.folderSpriteThree.visible = true;
 		});
@@ -107,16 +102,13 @@ export default class Resume extends React.Component {
 			0.5,
 			0.5
 		);
-		resumeSprite.on('mouseover', () => {
+		resumeSprite.on('pointerover', () => {
 			resumeSprite.tint = 0xafa5b5;
 		});
-		resumeSprite.on('mouseout', () => {
+		resumeSprite.on('pointerout', () => {
 			resumeSprite.tint = 0xffffff;
 		});
-		resumeSprite.on('click', () => {
-			window.open('https://jackiefeit94.github.io/Resume/', '_blank');
-		});
-		resumeSprite.on('tap', () => {
+		resumeSprite.on('pointertap', () => {
 			window.open('https://jackiefeit94.github.io/Resume/', '_blank');
 		});
 		resumeScroll.content.addChild(resumeSprite);
@@ -124,7 +116,6 @@ export default class Resume extends React.Component {
 	}
 
 	render() {
-		console.log(PixiApp.app);
 		return <div></div>;
 	}
 }

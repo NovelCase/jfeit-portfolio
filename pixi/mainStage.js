@@ -1,3 +1,5 @@
+const Resume = require('../client/Resume');
+
 const Project = require('../client/ProjectView');
 const Resume = require('../client/Resume');
 const { Sprite, TilingSprite } = require('pixi.js');
@@ -66,24 +68,65 @@ resize();
 //place to put background colors/textures
 
 //function to create homePage sprites
-export function createHomeSprite(x, y, texture, type) {
+export function createHomeSprite(x, y, texture, name) {
 	const sprite = new Sprite(texture);
 	app.stage.addChild(sprite);
 	sprite.anchor.set(0.5);
 	sprite.position.x = x;
 	sprite.position.y = y;
-	sprite.interactive = true;
-	sprite.buttonMode = true;
-	//sprite.scale.set()
+	if (name) {
+		sprite.name = name;
+		sprite.interactive = true;
+		sprite.buttonMode = true;
+		sprite
+			// events for drag start
+			.on('pointerover', socialRollover)
+			.on('pointerout', socialRollout)
+			.on('pointertap', socialClick);
+    	sprite.scale.set(0.3);
+	}
 	return sprite;
+}
+function socialRollover(event) {
+	this.texture = hoverStates[this.name][1];
+}
+function socialRollout(event) {
+	this.texture = hoverStates[this.name][0];
+}
+function socialClick(event) {
+	window.open(hoverStates[this.name][2], '_blank');
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
+
 const folder = PIXI.Texture.from('/siteAssets/welcome/folder-inverted.png');
 const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeNew.png');
-const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
-const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedInBW.png');
-const gmail = PIXI.Texture.from('/siteAssets/welcome/GmailBW.png');
+
+const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
+const githubHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Github-inverted.png'
+);
+const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
+const linkedInHover = PIXI.Texture.from(
+	'/siteAssets/welcome/LinkedIn-inverted.png'
+);
+const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
+const spotifyHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Spotify-inverted.png'
+);
+const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
+const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
+
+const hoverStates = {
+	github: [github, githubHover, 'https://github.com/jackiefeit94'],
+	spotify: [spotify, spotifyHover, ''],
+	gmail: [gmail, gmailHover, 'mailto:jackiefeit94@gmail.com?subject=Just visited your website!'],
+	linkedIn: [
+		linkedIn,
+		linkedInHover,
+		'https://www.linkedin.com/in/jackie-levine-feit/',
+	],
+};
 
 const style = {
 	fontFamily: 'Gloria Hallelujah',
@@ -140,37 +183,31 @@ app.stage.addChild(dock);
 let githubSprite = createHomeSprite(
 	appWidth / 4 + 100,
 	appHeight / 1.1,
-	github
+	github,
+	'github'
 );
-
-githubSprite.on('click', () => {
-	window.open('https://github.com/jackiefeit94', '_blank');
-});
-githubSprite.on('tap', () => {
-	window.open('https://github.com/jackiefeit94', '_blank');
-});
 
 let linkedInSprite = createHomeSprite(
 	appWidth / 4 + 250,
 	appHeight / 1.1,
-	linkedIn
+	linkedIn,
+	'linkedIn'
 );
 
-linkedInSprite.on('click', () => {
-	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
-linkedInSprite.on('tap', () => {
-	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
 
-let gmailSprite = createHomeSprite(appWidth / 4 + 550, appHeight / 1.1, gmail);
+let spotifySprite = createHomeSprite(
+	appWidth / 4 + 400,
+	appHeight / 1.1,
+	spotify,
+	'spotify'
+);
 
-gmailSprite.scale.set(0.25);
-
-gmailSprite.on('click', () => {
-	window.location.href =
-		'mailto:jackiefeit94@gmail.com?subject=Just visited your website!';
-});
+let gmailSprite = createHomeSprite(
+	appWidth / 4 + 550,
+	appHeight / 1.1,
+	gmail,
+	'gmail'
+);
 
 export let spotifyContainer = new PIXI.Container();
 app.stage.addChild(spotifyContainer);
@@ -182,9 +219,6 @@ export let folderSpriteOne = createItem(
 	folder,
 	'About'
 );
-
-// let folderOneText = new PIXI.Text('About', style);
-// folderOneText.visible = true;
 
 app.stage.addChild(folderSpriteOne);
 //folder 2
@@ -201,7 +235,6 @@ export let folderSpriteThree = createItem(
 	appWidth / 4,
 	appHeight / 3.5 + (appHeight / 4) * 1.8,
 	folder,
-
 	'Resume'
 );
 app.stage.addChild(folderSpriteThree);
@@ -252,7 +285,6 @@ welcomeSignSprite.on('mouseout', () => {
 
 app.stage.addChild(welcomeSignSprite);
 
-//export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
 function createItem(x, y, texture, name) {
 	// create a sprite
 	const item = new PIXI.Container();
@@ -261,21 +293,17 @@ function createItem(x, y, texture, name) {
 	item.interactive = true;
 	// make hand appear on rollover
 	item.buttonMode = true;
-	// center anchor point
-	// item.anchor.set(0.5);
+	
 	// setup events
 	item
 		// events for drag start
-		.on('mousedown', onDragStart)
-		.on('touchstart', onDragStart)
+		.on('pointerover', onPointerMove)
+		.on('pointerout', onPointerOut)
+		.on('pointerdown', onDragStart)
 		// events for drag end
-		.on('mouseup', projFuncs[name])
-		// .on('mouseupoutside', onDragEnd)
-		.on('touchend', projFuncs[name])
-		// .on('touchendoutside', onDragEnd)
+		.on('pointerup', projFuncs[name])
 		// events for drag move
-		.on('mousemove', onDragMove)
-		.on('touchmove', onDragMove);
+		.on('pointermove', onDragMove);
 
 	// move the sprite to its designated position
 	item.position.x = x;
@@ -290,6 +318,12 @@ function createItem(x, y, texture, name) {
 	text.position.y = content.position.y;
 	item.addChild(text);
 	return item;
+}
+function onPointerMove(event) {
+	this.rotation = 120;
+}
+function onPointerOut(event) {
+	this.rotation = 0;
 }
 function onDragStart(event) {
 	// store a reference to the data
