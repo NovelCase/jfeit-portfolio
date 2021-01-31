@@ -129,9 +129,10 @@ topBarText.on('mouseout', () => {
 //dock
 let dock = new PIXI.Graphics();
 dock
-	.beginFill(0xafa5b5)
-	.drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
+	.beginFill(0x726980)
+	.drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
 	.endFill();
+
 app.stage.addChild(dock);
 
 //icons
@@ -211,6 +212,16 @@ let welcomeSignSprite = createHomeSprite(
 	appHeight / 5,
 	welcomeSign
 );
+
+welcomeSignSprite.on('mouseover', () => {
+	welcomeSignSprite.tint = 0x8034eb;
+	welcomeSignSprite.rotation -= 0.4;
+});
+
+welcomeSignSprite.on('mouseout', () => {
+	welcomeSignSprite.tint = 0xffffff;
+	welcomeSignSprite.rotation = 0;
+});
 
 //welcome sprite swing attempt
 // welcomeSignSprite.vx = 1;
