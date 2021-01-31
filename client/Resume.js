@@ -3,13 +3,15 @@ import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
 import { Scrollbox } from 'pixi-scrollbox';
 import { text } from '../data';
-
+export const openResumeLink = () => {
+	PixiApp.resumeContainer.visible = true;
+};
 let resumeScroll;
 export default class Resume extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
-		rect.visible = true; //set to false when I have click functionality
+		PixiApp.resumeContainer.visible = false;
 		PixiApp.resumeContainer.addChild(rect);
 		const blur = new PIXI.filters.BlurFilter(3, 4);
 		rect.filters = [blur];
@@ -56,9 +58,8 @@ export default class Resume extends React.Component {
 		);
 
 		resumeClose.on('click', () => {
-			PixiApp.resumeContainer.children.forEach((child) => {
-				child.visible = false;
-			});
+			PixiApp.resumeContainer.visible = false;
+			PixiApp.folderSpriteThree.visible = true;
 		});
 
 		const resumeTexture = PIXI.Texture.from(
@@ -74,7 +75,6 @@ export default class Resume extends React.Component {
 	}
 
 	render() {
-		console.log(PixiApp.app);
 		return <div></div>;
 	}
 }
