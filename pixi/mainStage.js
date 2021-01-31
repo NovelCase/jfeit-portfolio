@@ -88,16 +88,12 @@ const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
 const linkedInHover = PIXI.Texture.from(
   '/siteAssets/welcome/LinkedIn-inverted.png'
 );
-const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
-const spotifyHover = PIXI.Texture.from(
-  '/siteAssets/welcome/Spotify-inverted.png'
-);
+
 const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
 const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
 
 const hoverStates = {
 	github: [github, githubHover, 'https://github.com/jackiefeit94'],
-	spotify: [spotify, spotifyHover, ''],
 	gmail: [
 		gmail,
 		gmailHover,
@@ -178,13 +174,6 @@ let linkedInSprite = createHomeSprite(
 	app.renderer.view.height / 1.1,
 	linkedIn,
 	'linkedIn'
-);
-
-let spotifySprite = createHomeSprite(
-	app.renderer.view.width / 4 + 400,
-	app.renderer.view.height / 1.1,
-	spotify,
-	'spotify'
 );
 
 let gmailSprite = createHomeSprite(
