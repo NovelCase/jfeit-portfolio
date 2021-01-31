@@ -84,7 +84,7 @@ function createHomeSprite(x, y, texture, name) {
 			.on('pointerout', socialRollout)
 			.on('pointertap', socialClick);
 	}
-	sprite.scale.set(0.5);
+	sprite.scale.set(0.3);
 	return sprite;
 }
 function socialRollover(event) {
@@ -100,16 +100,20 @@ function socialClick(event) {
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
 const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
 const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
-const github = PIXI.Texture.from('/siteAssets/welcome/Github-black.png');
-const githubHover = PIXI.Texture.from('/siteAssets/welcome/Github-pink.png');
-const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-black.png');
-const linkedInHover = PIXI.Texture.from(
-	'/siteAssets/welcome/LinkedIn-pink.png'
+const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
+const githubHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Github-inverted.png'
 );
-const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-black.png');
-const spotifyHover = PIXI.Texture.from('/siteAssets/welcome/Spotify-pink.png');
-const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-black.png');
-const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-pink.png');
+const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
+const linkedInHover = PIXI.Texture.from(
+	'/siteAssets/welcome/LinkedIn-inverted.png'
+);
+const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
+const spotifyHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Spotify-inverted.png'
+);
+const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
+const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
 
 const hoverStates = {
 	github: [github, githubHover, 'https://github.com/jackiefeit94'],
