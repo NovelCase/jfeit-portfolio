@@ -122,7 +122,7 @@ export default class Project extends React.Component {
 		const weatherTexture = PIXI.Texture.from(
 			'siteAssets/projects/WeatherWatcher.png'
 		);
-		const leafTexture = PIXI.Texture.from('siteAssets/projects/looseLeaf.png');
+		const leafTexture = PIXI.Texture.from('siteAssets/projects/sketch-pad.png');
 		const spyTexture = PIXI.Texture.from('siteAssets/projects/SpyQL.png');
 		const woofTexture = PIXI.Texture.from('siteAssets/projects/Hallowoof.png');
 
@@ -131,22 +131,22 @@ export default class Project extends React.Component {
 			weatherTexture,
 			(projectDetails.width / 4) * 1.1,
 			(projectDetails.height / 4) * 0.57,
-			0.65
+			0.5
 		);
 
 		const weatherLeaf = this.createSprite(
 			leafTexture,
 			(projectDetails.width / 4) * 3.1,
 			weatherWatcher.y,
-			3.2,
-			2.8
+			0.7,
+			0.7
 		);
 
 		const weatherTitle = this.createText(
 			text.weatherWatcher.name,
-			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
-			weatherLeaf.x * 0.87,
-			weatherLeaf.y * 0.3
+			{ fontSize: 25, fontFamily: 'Gloria Hallelujah' },
+			weatherLeaf.x * 0.85,
+			weatherLeaf.y * 0.7
 		);
 
 		const weatherDescription = this.createText(
@@ -157,27 +157,29 @@ export default class Project extends React.Component {
 				wordWrap: true,
 				wordWrapWidth: projectDetails.width / 4.7,
 			},
-			weatherLeaf.x * 0.86,
-			weatherLeaf.y * 0.53
+			weatherLeaf.x * 0.9,
+			weatherLeaf.y * 0.9
 		);
 
 		const weatherGithub = this.createText(
 			text.weatherWatcher.linkOne,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			weatherLeaf.x * 0.86,
-			weatherLeaf.y * 1.6,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			weatherLeaf.x * 0.9,
+			weatherLeaf.y * 1.7,
 			true
 		);
 		weatherGithub.on('click', () =>
 			window.open(text.weatherWatcher.linkOneUrl)
 		);
-		weatherGithub.on('tap', () => window.open(text.weatherWatcher.linkOneUrl));
+		weatherGithub.on('tap', () =>
+			window.open(`${text.weatherWatcher.linkOneUrl} `)
+		);
 
 		const weatherWalkThrough = this.createText(
-			`| ${text.weatherWatcher.linkTwo}`,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			weatherLeaf.x * 0.93,
-			weatherLeaf.y * 1.6,
+			`  ${text.weatherWatcher.linkTwo}`,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			weatherLeaf.x * 0.98,
+			weatherLeaf.y * 1.7,
 			true
 		);
 		weatherWalkThrough.on('click', () =>
@@ -192,22 +194,22 @@ export default class Project extends React.Component {
 			spyTexture,
 			weatherWatcher.x * 2.6,
 			weatherLeaf.y * 3.3,
-			0.55
+			0.45
 		);
 
 		const spyLeaf = this.createSprite(
 			leafTexture,
 			weatherWatcher.x * 0.7,
 			spyQL.y,
-			3.2,
-			2.8
+			0.7,
+			0.7
 		);
 
 		const spyQLTitle = this.createText(
 			text.spyQL.name,
-			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
+			{ fontSize: 25, fontFamily: 'Gloria Hallelujah' },
 			spyLeaf.x * 0.75,
-			spyLeaf.y * 0.79
+			spyLeaf.y * 0.92
 		);
 
 		const spyQLDescription = this.createText(
@@ -218,35 +220,35 @@ export default class Project extends React.Component {
 				wordWrap: true,
 				wordWrapWidth: projectDetails.width / 4,
 			},
-			spyLeaf.x * 0.46,
-			spyLeaf.y * 0.87
+			spyLeaf.x * 0.5,
+			spyLeaf.y * 0.98
 		);
 
 		const spyQLGithub = this.createText(
 			text.spyQL.linkOne,
-			{ fontSize: 20 },
-			spyLeaf.x * 0.46,
-			spyLeaf.y * 1.18,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			spyLeaf.x * 0.4,
+			spyLeaf.y * 1.2,
 			true
 		);
 		spyQLGithub.on('click', () => window.open(text.spyQL.linkOneUrl));
 		spyQLGithub.on('tap', () => window.open(text.spyQL.linkOneUrl));
 
 		const spyQLWalkThrough = this.createText(
-			`| ${text.spyQL.linkTwo}`,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			spyLeaf.x * 0.76,
-			spyLeaf.y * 1.18,
+			`${text.spyQL.linkTwo}`,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			spyLeaf.x * 0.8,
+			spyLeaf.y * 1.2,
 			true
 		);
 		spyQLWalkThrough.on('click', () => window.open(text.spyQL.linkTwoUrl));
 		spyQLWalkThrough.on('tap', () => window.open(text.spyQL.linkTwoUrl));
 
 		const spyQLDeployed = this.createText(
-			`| ${text.spyQL.linkThree}`,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			spyLeaf.x * 1.31,
-			spyLeaf.y * 1.18,
+			`${text.spyQL.linkThree}`,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			spyLeaf.x * 1.4,
+			spyLeaf.y * 1.2,
 			true
 		);
 		spyQLDeployed.on('click', () => window.open(text.spyQL.linkThreeUrl));
@@ -257,22 +259,22 @@ export default class Project extends React.Component {
 			woofTexture,
 			weatherWatcher.x,
 			weatherWatcher.y * 5.75,
-			0.65
+			0.5
 		);
 
 		const hallowLeaf = this.createSprite(
 			leafTexture,
 			weatherLeaf.x,
 			halloWoof.y,
-			3.2,
-			2.8
+			0.7,
+			0.7
 		);
 
 		const halloWoofTitle = this.createText(
 			text.hallowoof.name,
-			{ fontSize: 34, fontFamily: 'Gloria Hallelujah' },
+			{ fontSize: 25, fontFamily: 'Gloria Hallelujah' },
 			hallowLeaf.x * 0.9,
-			hallowLeaf.y * 0.88
+			hallowLeaf.y * 0.95
 		);
 
 		const halloWoofDescription = this.createText(
@@ -284,24 +286,24 @@ export default class Project extends React.Component {
 				wordWrapWidth: projectDetails.width / 4,
 			},
 			hallowLeaf.x * 0.865,
-			hallowLeaf.y * 0.92
+			hallowLeaf.y * 0.99
 		);
 
 		const halloWoofGithub = this.createText(
 			text.hallowoof.linkOne,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			hallowLeaf.x * 0.865,
-			hallowLeaf.y * 1.1,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			hallowLeaf.x * 0.88,
+			hallowLeaf.y * 1.12,
 			true
 		);
 		halloWoofGithub.on('click', () => window.open(text.hallowoof.linkOneUrl));
 		halloWoofGithub.on('tap', () => window.open(text.hallowoof.linkOneUrl));
 
 		const halloWoofDeployed = this.createText(
-			`| ${text.hallowoof.linkTwo}`,
-			{ fontSize: 20, fontFamily: 'Gloria Hallelujah' },
-			hallowLeaf.x * 0.935,
-			hallowLeaf.y * 1.1,
+			`${text.hallowoof.linkTwo}`,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			hallowLeaf.x * 0.985,
+			hallowLeaf.y * 1.12,
 			true
 		);
 		halloWoofDeployed.on('click', () => window.open(text.hallowoof.linkTwoUrl));

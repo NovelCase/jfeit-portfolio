@@ -48,7 +48,7 @@ export default class AboutMe extends React.Component {
 		});
 		aboutme.addChild(rect);
 		const apron = new PIXI.Sprite(
-			PIXI.Texture.from('/siteAssets/about/Apron.png')
+			PIXI.Texture.from('/siteAssets/about/Apron-1.png')
 		);
 		const jackieNoah = new PIXI.Sprite(
 			PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
@@ -84,7 +84,7 @@ export default class AboutMe extends React.Component {
 			fontWeight: '300',
 			lineHeight: aboutme.height / 20,
 			wordWrap: true,
-			wordWrapWidth: (aboutme.width / 3) * 2,
+			wordWrapWidth: (aboutme.width / 3) * 1.5,
 		};
 
 		const title = new PIXI.Text('About Me', titleStyle);
@@ -94,7 +94,7 @@ export default class AboutMe extends React.Component {
 		aboutme.addChild(title);
 		const desc = new PIXI.Text(text.about.description, descriptionStyle);
 		desc.position.x = window.innerWidth / 2;
-		desc.position.y = aboutme.height / 2.5;
+		desc.position.y = aboutme.height / 2;
 		desc.anchor.set(0.5);
 		aboutme.addChild(desc);
 		aboutme.addChild(violin);
