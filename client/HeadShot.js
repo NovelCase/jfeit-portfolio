@@ -109,15 +109,15 @@ export default class HeadShot extends React.Component {
     photo.position.y = stylePosition.photoY;
     PixiApp.headShotContainer.addChild(photo);
 
-    /* SPOTLIGHT */
-    const lighting = new PIXI.Container();
-    lighting.on('display', (element) => {
-      element.blendMode = PIXI.BLEND_MODES.ADD;
-    });
-    lighting.useRenderTexture = true;
-    lighting.clearColor = [0.5, 0.5, 0.5, 1]; // ambient gray
-    lighting.visible = false;
-    PixiApp.headShotContainer.addChild(lighting);
+		/* SPOTLIGHT */
+		const lighting = new PIXI.Container();
+		lighting.on('display', (element) => {
+			element.blendMode = PIXI.BLEND_MODES.ADD;
+		});
+		lighting.useRenderTexture = true;
+		lighting.clearColor = [0.5, 0.5, 0.5, 1]; // ambient gray
+		lighting.visible = false;
+		PixiApp.headShotContainer.addChild(lighting);
 
     const W = headshotPopUp.width * 0.85;
     const H = headshotPopUp.height * 0.78;
@@ -160,20 +160,20 @@ export default class HeadShot extends React.Component {
       lightbulb.parentLayer = lighting;
       lightbulb.position.set(Math.random() * WIDTH, Math.random() * HEIGHT);
 
-      lighting.addChild(lightbulb);
+			lighting.addChild(lightbulb);
 
-      return lightbulb;
-    }
+			return lightbulb;
+		}
 
     for (let i = 0; i < 3; i++) {
       lighting.addChild(createLightBulb());
     }
 
-    PixiApp.app.ticker.add(() => {
-      lighting.children.forEach(updateLightBulb);
-    });
-  }
-  render() {
-    return <div></div>;
-  }
+		PixiApp.app.ticker.add(() => {
+			lighting.children.forEach(updateLightBulb);
+		});
+	}
+	render() {
+		return <div></div>;
+	}
 }

@@ -2,7 +2,7 @@ const { Rectangle } = require('pixi.js');
 
 window.WebFontConfig = {
 	google: {
-		families: ['Roboto Mono'],
+		families: ['Gloria Hallelujah'],
 	},
 };
 

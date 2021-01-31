@@ -1,5 +1,7 @@
-const Project = require('../client/ProjectView');
+const Resume = require('../client/Resume');
 
+const Project = require('../client/ProjectView');
+const Resume = require('../client/Resume');
 const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 const About = require('../client/AboutMe');
@@ -27,47 +29,88 @@ let startclick;
 export let test = new PIXI.Container();
 megaContainer.addChild(test);
 
-let appWidth = app.renderer.view.width;
-let appHeight = app.renderer.view.height;
+export let appWidth = app.renderer.view.width;
+export let appHeight = app.renderer.view.height;
 
 //place to put background colors/textures
 
 let projFuncs = {
-  About: aboutDragEnd,
-  Projects: projDragEnd,
-  Resume: aboutDragEnd,
+	About: aboutDragEnd,
+	Projects: projDragEnd,
+	Resume: resumeDragEnd,
+};
+const scales = {
+	1800: 1.2,
+	1600: 1,
+	1500: 0.9,
+	1400: 0.7,
 };
 
-// let scale = {
-//   github: 1,
-//   linkedIn: 1,
-//   spotify: 0.5,
-//   gmail: 0.25,
-//   welcomeSign: 0.2,
-// };
-
 //function to create homePage sprites
-function createHomeSprite(x, y, texture, type) {
-  const sprite = new Sprite(texture);
-  sprite.anchor.set(0.5);
-  sprite.position.x = x;
-  sprite.position.y = y;
-  homeContainer.addChild(sprite);
-  return sprite;
+export function createHomeSprite(x, y, texture, name) {
+	const sprite = new Sprite(texture);
+	homeContainer.addChild(sprite);
+	sprite.anchor.set(0.5);
+	sprite.position.x = x;
+	sprite.position.y = y;
+	if (name) {
+		sprite.name = name;
+		sprite.interactive = true;
+		sprite.buttonMode = true;
+		sprite
+			// events for drag start
+			.on('pointerover', socialRollover)
+			.on('pointerout', socialRollout)
+			.on('pointertap', socialClick);
+    	sprite.scale.set(0.3);
+	}
+	return sprite;
+}
+function socialRollover(event) {
+	this.texture = hoverStates[this.name][1];
+}
+function socialRollout(event) {
+	this.texture = hoverStates[this.name][0];
+}
+function socialClick(event) {
+	window.open(hoverStates[this.name][2], '_blank');
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
-const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
-const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
-const github = PIXI.Texture.from('/siteAssets/welcome/GithubBW.png');
-const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedInBW.png');
-const spotify = PIXI.Texture.from('/siteAssets/welcome/SpotifyBW.png');
-const gmail = PIXI.Texture.from('/siteAssets/welcome/GmailBW.png');
+
+const folder = PIXI.Texture.from('/siteAssets/welcome/folder-inverted.png');
+const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeNew.png');
+
+const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
+const githubHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Github-inverted.png'
+);
+const linkedIn = PIXI.Texture.from('/siteAssets/welcome/LinkedIn-purp.png');
+const linkedInHover = PIXI.Texture.from(
+	'/siteAssets/welcome/LinkedIn-inverted.png'
+);
+const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
+const spotifyHover = PIXI.Texture.from(
+	'/siteAssets/welcome/Spotify-inverted.png'
+);
+const gmail = PIXI.Texture.from('/siteAssets/welcome/Gmail-purp.png');
+const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
+
+const hoverStates = {
+	github: [github, githubHover, 'https://github.com/jackiefeit94'],
+	spotify: [spotify, spotifyHover, ''],
+	gmail: [gmail, gmailHover, 'mailto:jackiefeit94@gmail.com?subject=Just visited your website!'],
+	linkedIn: [
+		linkedIn,
+		linkedInHover,
+		'https://www.linkedin.com/in/jackie-levine-feit/',
+	],
+};
 
 const style = {
-  fontFamily: 'Nunito Sans',
-  fontSize: 25,
-  fontWeight: 'bold',
+	fontFamily: 'Gloria Hallelujah',
+	fontSize: 25,
+	fontWeight: 'bold',
 };
 const homeContainer = new PIXI.Container();
 megaContainer.addChild(homeContainer);
@@ -98,18 +141,23 @@ homeContainer.addChild(topBarText);
 topBarText.on('pointertap', () => {
   headShotContainer.children.forEach((child) => (child.visible = true));
 });
+topBarText.on('tap', () => {
+	headShotContainer.children.forEach((child) => (child.visible = true));
+});
 
+topBarText.on('mouseover', () => {
+	topBarText.tint = 0x8034eb;
+});
+topBarText.on('mouseout', () => {
+	topBarText.tint = 0xffffff;
+});
 //dock
 let dock = new PIXI.Graphics();
 dock
-  .beginFill(0x1d0046)
-  .drawRect(
-    app.renderer.view.width / 4,
-    app.renderer.view.height / 1.05,
-    app.renderer.view.width * 0.5,
-    app.renderer.view.height / 15
-  )
-  .endFill();
+	.beginFill(0x726980)
+	.drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
+	.endFill();
+
 homeContainer.addChild(dock);
 
 //icons
@@ -121,13 +169,6 @@ let githubSprite = createHomeSprite(
   'github'
 );
 
-githubSprite.on('click', () => {
-  window.open('https://github.com/jackiefeit94', '_blank');
-});
-githubSprite.on('tap', () => {
-  window.open('https://github.com/jackiefeit94', '_blank');
-});
-
 let linkedInSprite = createHomeSprite(
   app.renderer.view.width / 4 + 250,
   app.renderer.view.height / 1.1,
@@ -135,20 +176,13 @@ let linkedInSprite = createHomeSprite(
   'linkedIn'
 );
 
-linkedInSprite.on('click', () => {
-  window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
-linkedInSprite.on('tap', () => {
-  window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-});
-
 let spotifySprite = createHomeSprite(
   app.renderer.view.width / 4 + 400,
   app.renderer.view.height / 1.1,
   spotify,
   'spotify'
+
 );
-spotifySprite.scale.set(0.5);
 
 let gmailSprite = createHomeSprite(
   app.renderer.view.width / 4 + 550,
@@ -157,7 +191,8 @@ let gmailSprite = createHomeSprite(
   'gmail'
 );
 
-gmailSprite.scale.set(0.25);
+export let spotifyContainer = new PIXI.Container();
+app.stage.addChild(spotifyContainer);
 
 //folder 1
 export let folderSpriteOne = createItem(
@@ -167,14 +202,11 @@ export let folderSpriteOne = createItem(
   'About'
 );
 
-// let folderOneText = new PIXI.Text('About', style);
-// folderOneText.visible = true;
-
 megaContainer.addChild(folderSpriteOne);
 //folder 2
 export let folderSpriteTwo = createItem(
   app.renderer.view.width / 4,
-  (app.renderer.view.height / 3.5) * 2,
+  (app.renderer.view.height / 3.5) * 1.8,
   folder,
   'Projects'
 );
@@ -183,9 +215,8 @@ megaContainer.addChild(folderSpriteTwo);
 //folder 3
 let folderSpriteThree = createItem(
   app.renderer.view.width / 4,
-  app.renderer.view.height / 3.5 + (app.renderer.view.height / 4) * 2,
+  app.renderer.view.height / 3.5 + (app.renderer.view.height / 4) * 1.8,
   folder,
-
   'Resume'
 );
 megaContainer.addChild(folderSpriteThree);
@@ -197,46 +228,85 @@ let welcomeSignSprite = createHomeSprite(
   welcomeSign,
   'welcomeSign'
 );
-welcomeSignSprite.scale.set(0.2);
 
-//export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
+welcomeSignSprite.on('mouseover', () => {
+	welcomeSignSprite.tint = 0x8034eb;
+	welcomeSignSprite.rotation -= 0.4;
+});
+
+welcomeSignSprite.on('mouseout', () => {
+	welcomeSignSprite.tint = 0xffffff;
+	welcomeSignSprite.rotation = 0;
+});
+
+//welcome sprite swing attempt
+// welcomeSignSprite.vx = 1;
+// welcomeSignSprite.vy = 1;
+
+// function gameLoop() {
+// 	//Call this `gameLoop` function on the next screen refresh
+// 	//(which happens 60 times per second)
+// 	requestAnimationFrame(gameLoop);
+
+// 	//Move the cat
+// 	// if ((welcomeSignSprite.rotation = 0.2)) {
+// 	// 	welcomeSignSprite.rotation = -0.2;
+// 	// } else welcomeSignSprite.rotation = 0.2;
+// 	if (welcomeSignSprite.rotation !== 0.5) {
+// 		welcomeSignSprite.rotation += 0.05;
+// 	}
+
+// 	// if (welcomeSignSprite.rotation === 0.05) {
+// 	// 	setTimeout(() => {
+// 	// 		welcomeSignSprite.rotation -= 0.1;
+// 	// 	}, 1000);
+// 	// }
+// }
+
+// //Start the loop
+// gameLoop();
+
+app.stage.addChild(welcomeSignSprite);
+
 function createItem(x, y, texture, name) {
-  // create a sprite
-  const item = new PIXI.Container();
-  test.addChild(item);
-  // make sprite interactive
-  item.interactive = true;
-  // make hand appear on rollover
-  item.buttonMode = true;
-  // center anchor point
-  // item.anchor.set(0.5);
-  // setup events
-  item
-    // events for drag start
-    .on('mousedown', onDragStart)
-    .on('touchstart', onDragStart)
-    // events for drag end
-    .on('mouseup', projFuncs[name])
-    // .on('mouseupoutside', onDragEnd)
-    .on('touchend', projFuncs[name])
-    // .on('touchendoutside', onDragEnd)
-    // events for drag move
-    .on('mousemove', onDragMove)
-    .on('touchmove', onDragMove);
+	// create a sprite
+	const item = new PIXI.Container();
+	test.addChild(item);
+	// make sprite interactive
+	item.interactive = true;
+	// make hand appear on rollover
+	item.buttonMode = true;
+	
+	// setup events
+	item
+		// events for drag start
+		.on('pointerover', onPointerMove)
+		.on('pointerout', onPointerOut)
+		.on('pointerdown', onDragStart)
+		// events for drag end
+		.on('pointerup', projFuncs[name])
+		// events for drag move
+		.on('pointermove', onDragMove);
 
-  // move the sprite to its designated position
-  item.position.x = x;
-  item.position.y = y;
-  const content = new PIXI.Sprite(texture);
-  item.addChild(content);
-  content.anchor.set(0.5);
-  content.scale.set(0.25);
-  const text = new PIXI.Text(name, style);
-  text.anchor.set(0.5);
-  text.position.x = content.position.x;
-  text.position.y = content.position.y;
-  item.addChild(text);
-  return item;
+	// move the sprite to its designated position
+	item.position.x = x;
+	item.position.y = y;
+	const content = new PIXI.Sprite(texture);
+	item.addChild(content);
+	content.anchor.set(0.5);
+	content.scale.set(0.25);
+	const text = new PIXI.Text(name, style);
+	text.anchor.set(0.5);
+	text.position.x = content.position.x;
+	text.position.y = content.position.y;
+	item.addChild(text);
+	return item;
+}
+function onPointerMove(event) {
+	this.rotation = 120;
+}
+function onPointerOut(event) {
+	this.rotation = 0;
 }
 function onDragStart(event) {
   // store a reference to the data
@@ -283,6 +353,24 @@ function projDragEnd() {
   this.data = null;
 }
 
+function resumeDragEnd() {
+	this.alpha = 1;
+	this.dragging = false;
+	const newPosition = this.data.getLocalPosition(this.parent);
+	console.log(this.position, newPosition);
+	if (
+		Math.abs(newPosition.x - startclick.x) < 10 &&
+		Math.abs(newPosition.y - startclick.y) < 10
+	) {
+		Resume.openResLink();
+		this.visible = false;
+	}
+
+	startclick = null;
+	// set the interaction data to null
+	this.data = null;
+}
+
 function onDragMove() {
   if (this.dragging) {
     const newPosition = this.data.getLocalPosition(this.parent);
@@ -315,24 +403,14 @@ megaContainer.addChild(aboutContainer);
 export let headShotContainer = new PIXI.Container();
 megaContainer.addChild(headShotContainer);
 export let resumeContainer = new PIXI.Container();
-megaContainer.addChild(resumeContainer);
 
-/* mobile scaling */
-// if (window.outerWidth < 400) {
-//   app.stage.children.forEach((child) => {
-//     child.scale.x += 0.5;
-//   });
-// }
+megaContainer.addChild(resumeContainer);
 
 /* resize - web responsive*/
 window.addEventListener('resize', resize);
 
 //for scaling adjustment not on refresh
 function resize() {
-  // let resizeValue = 0.02;
-  // if (window.innerWidth < app.renderer.view.width) {
-  //   resizeValue = -0.02;
-  // }
   let widthDiff = window.innerWidth - app.renderer.view.width;
   let heightDiff = window.innerHeight - app.renderer.view.height;
   let method = 'add';
@@ -340,30 +418,16 @@ function resize() {
     method = 'subtract';
     widthDiff = app.renderer.view.width - window.innerWidth;
     heightDiff = app.renderer.view.height - window.innerHeight;
-    // resizeValue = -0.02;
   }
   app.renderer.resize(window.innerWidth, window.innerHeight);
   app.stage.children.forEach((child, idx) => {
     if (method === 'add') {
       child.width += widthDiff;
       child.height += heightDiff;
-      console.log(method, widthDiff, child.width, heightDiff, child.height);
     } else {
       child.width -= widthDiff;
       child.height -= heightDiff;
-      console.log(method, widthDiff, child.width);
     }
-    // child.children.forEach((innerChild, idx) => {
-    //   if (idx !== 1) {
-    //     innerChild.scale.x += resizeValue;
-    //   }
-    // });
   });
-  // console.log(app.stage.children[1].width);
-  // app.stage.children.forEach((child, idx) => {
-  //   // child.scale.x += resizeValue;
-  //   // console.log(child.scale.x, idx);
-  //   console.log(child.width, idx);
-  // });
 }
-// resize();
+
