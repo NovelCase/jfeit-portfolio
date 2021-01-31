@@ -2,11 +2,10 @@ import React from 'react';
 import * as PixiApp from '../pixi/mainStage.js';
 import * as PIXI from 'pixi.js';
 import { Scrollbox } from 'pixi-scrollbox';
-import { text } from '../data';
-export const openResumeLink = () => {
+let resumeScroll;
+export const openResLink = () => {
 	PixiApp.resumeContainer.visible = true;
 };
-let resumeScroll;
 export default class Resume extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
@@ -17,7 +16,7 @@ export default class Resume extends React.Component {
 		rect.filters = [blur];
 		const bar = new PIXI.Graphics();
 		bar
-			.beginFill(0x361876)
+			.beginFill(0x1d0046)
 			.drawRect(x, y, width, height / 22)
 			.endFill();
 		bar.visible = true; //set to false when I have click functionality
@@ -30,6 +29,12 @@ export default class Resume extends React.Component {
 		close.visible = true; //set to false when I have click functionality
 		close.interactive = true;
 		close.buttonMode = true;
+		close.on('mouseover', () => {
+			close.tint = 0xe3cdfe;
+		});
+		close.on('mouseout', () => {
+			close.tint = 0xffffff;
+		});
 		PixiApp.resumeContainer.addChild(close);
 		return [rect, bar, close];
 	}
@@ -38,13 +43,15 @@ export default class Resume extends React.Component {
 		sprite.anchor.set(0.5);
 		sprite.position.x = x;
 		sprite.position.y = y;
+		sprite.interactive = true;
+		sprite.buttonMode = true;
 		if (scaleY) {
 			sprite.scale.x = scaleX;
 			sprite.scale.y = scaleY;
 		} else {
 			sprite.scale.set(scaleX);
 		}
-		PixiApp.resumeContainer.addChild(sprite);
+		//PixiApp.resumeContainer.addChild(sprite);
 		//resumeScroll.content.addChild(sprite);
 		return sprite;
 	}
@@ -57,7 +64,7 @@ export default class Resume extends React.Component {
 			(window.innerHeight / 4) * 3.8
 		);
 
-		resumeClose.on('click', () => {
+		resumeClose.on('pointertap', () => {
 			PixiApp.resumeContainer.visible = false;
 			PixiApp.folderSpriteThree.visible = true;
 		});
@@ -65,13 +72,47 @@ export default class Resume extends React.Component {
 		const resumeTexture = PIXI.Texture.from(
 			'siteAssets/about/Levine_Resume_12.12.20-1 2.png'
 		);
+		resumeScroll = PixiApp.resumeContainer.addChild(
+			new Scrollbox({
+				boxWidth: resumePopUp.width * 0.9,
+				boxHeight: resumePopUp.height * 0.9,
+			})
+		);
+		resumeScroll.position.set(
+			resumePopUp.width / 4.55,
+			resumePopUp.height / 12
+		);
 
 		/* Resume */
+
+		let resumeDetails = resumeScroll.content.addChild(new PIXI.Graphics());
+		resumeDetails
+			.beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
+			.drawRect(
+				window.innerWidth / 2,
+				window.innerHeight / 2,
+				resumeScroll.boxWidth / 2,
+				resumeScroll.boxHeight
+			)
+			.endFill();
 		const resumeSprite = this.createSprite(
 			resumeTexture,
-			window.innerWidth / 2,
-			window.innerHeight / 2
+			resumeDetails.width,
+			resumeScroll.height * 1.9,
+			0.5,
+			0.5
 		);
+		resumeSprite.on('pointerover', () => {
+			resumeSprite.tint = 0xafa5b5;
+		});
+		resumeSprite.on('pointerout', () => {
+			resumeSprite.tint = 0xffffff;
+		});
+		resumeSprite.on('pointertap', () => {
+			window.open('https://jackiefeit94.github.io/Resume/', '_blank');
+		});
+		resumeScroll.content.addChild(resumeSprite);
+		resumeScroll.update();
 	}
 
 	render() {

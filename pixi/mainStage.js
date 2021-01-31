@@ -1,7 +1,7 @@
 const Resume = require('../client/Resume');
 
 const Project = require('../client/ProjectView');
-
+const Resume = require('../client/Resume');
 const { Sprite, TilingSprite } = require('pixi.js');
 const PIXI = require('pixi.js');
 const About = require('../client/AboutMe');
@@ -26,8 +26,8 @@ let startclick;
 export let test = new PIXI.Container();
 app.stage.addChild(test);
 
-let appWidth = app.renderer.view.width;
-let appHeight = app.renderer.view.height;
+export let appWidth = app.renderer.view.width;
+export let appHeight = app.renderer.view.height;
 
 window.addEventListener('resize', resize);
 let projFuncs = {
@@ -68,7 +68,7 @@ resize();
 //place to put background colors/textures
 
 //function to create homePage sprites
-function createHomeSprite(x, y, texture, name) {
+export function createHomeSprite(x, y, texture, name) {
 	const sprite = new Sprite(texture);
 	app.stage.addChild(sprite);
 	sprite.anchor.set(0.5);
@@ -83,8 +83,8 @@ function createHomeSprite(x, y, texture, name) {
 			.on('pointerover', socialRollover)
 			.on('pointerout', socialRollout)
 			.on('pointertap', socialClick);
+    	sprite.scale.set(0.3);
 	}
-	sprite.scale.set(0.3);
 	return sprite;
 }
 function socialRollover(event) {
@@ -98,8 +98,10 @@ function socialClick(event) {
 }
 
 const wallPaper = PIXI.Texture.from('/siteAssets/wallpaper/newBackground.png');
-const folder = PIXI.Texture.from('/siteAssets/welcome/PinkFolder.png');
-const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeSign.png');
+
+const folder = PIXI.Texture.from('/siteAssets/welcome/folder-inverted.png');
+const welcomeSign = PIXI.Texture.from('/siteAssets/welcome/welcomeNew.png');
+
 const github = PIXI.Texture.from('/siteAssets/welcome/Github-purp.png');
 const githubHover = PIXI.Texture.from(
 	'/siteAssets/welcome/Github-inverted.png'
@@ -118,15 +120,16 @@ const gmailHover = PIXI.Texture.from('/siteAssets/welcome/Gmail-inverted.png');
 const hoverStates = {
 	github: [github, githubHover, 'https://github.com/jackiefeit94'],
 	spotify: [spotify, spotifyHover, ''],
-	gmail: [gmail, gmailHover, 'mailto: jackiefeit94@gmail.com'],
+	gmail: [gmail, gmailHover, 'mailto:jackiefeit94@gmail.com?subject=Just visited your website!'],
 	linkedIn: [
 		linkedIn,
 		linkedInHover,
 		'https://www.linkedin.com/in/jackie-levine-feit/',
 	],
 };
+
 const style = {
-	fontFamily: 'Nunito Sans',
+	fontFamily: 'Gloria Hallelujah',
 	fontSize: 25,
 	fontWeight: 'bold',
 };
@@ -156,13 +159,23 @@ app.stage.addChild(topBarText);
 topBarText.on('click', () => {
 	headShotContainer.children.forEach((child) => (child.visible = true));
 });
+topBarText.on('tap', () => {
+	headShotContainer.children.forEach((child) => (child.visible = true));
+});
 
+topBarText.on('mouseover', () => {
+	topBarText.tint = 0x8034eb;
+});
+topBarText.on('mouseout', () => {
+	topBarText.tint = 0xffffff;
+});
 //dock
 let dock = new PIXI.Graphics();
 dock
-	.beginFill(0x1d0046)
-	.drawRect(appWidth / 4, appHeight / 1.05, appWidth * 0.5, appHeight / 15)
+	.beginFill(0x726980)
+	.drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
 	.endFill();
+
 app.stage.addChild(dock);
 
 //icons
@@ -174,13 +187,6 @@ let githubSprite = createHomeSprite(
 	'github'
 );
 
-// githubSprite.on('click', () => {
-// 	window.open('https://github.com/jackiefeit94', '_blank');
-// });
-// githubSprite.on('tap', () => {
-// 	window.open('https://github.com/jackiefeit94', '_blank');
-// });
-
 let linkedInSprite = createHomeSprite(
 	appWidth / 4 + 250,
 	appHeight / 1.1,
@@ -188,12 +194,6 @@ let linkedInSprite = createHomeSprite(
 	'linkedIn'
 );
 
-// linkedInSprite.on('click', () => {
-// 	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-// });
-// linkedInSprite.on('tap', () => {
-// 	window.open('https://www.linkedin.com/in/jackie-levine-feit/', '_blank');
-// });
 
 let spotifySprite = createHomeSprite(
 	appWidth / 4 + 400,
@@ -201,7 +201,6 @@ let spotifySprite = createHomeSprite(
 	spotify,
 	'spotify'
 );
-// spotifySprite.scale.set(0.5);
 
 let gmailSprite = createHomeSprite(
 	appWidth / 4 + 550,
@@ -210,7 +209,8 @@ let gmailSprite = createHomeSprite(
 	'gmail'
 );
 
-// gmailSprite.scale.set(0.25);
+export let spotifyContainer = new PIXI.Container();
+app.stage.addChild(spotifyContainer);
 
 //folder 1
 export let folderSpriteOne = createItem(
@@ -220,14 +220,11 @@ export let folderSpriteOne = createItem(
 	'About'
 );
 
-// let folderOneText = new PIXI.Text('About', style);
-// folderOneText.visible = true;
-
 app.stage.addChild(folderSpriteOne);
 //folder 2
 export let folderSpriteTwo = createItem(
 	appWidth / 4,
-	(appHeight / 3.5) * 2,
+	(appHeight / 3.5) * 1.8,
 	folder,
 	'Projects'
 );
@@ -236,7 +233,7 @@ app.stage.addChild(folderSpriteTwo);
 //folder 3
 export let folderSpriteThree = createItem(
 	appWidth / 4,
-	appHeight / 3.5 + (appHeight / 4) * 2,
+	appHeight / 3.5 + (appHeight / 4) * 1.8,
 	folder,
 	'Resume'
 );
@@ -248,10 +245,46 @@ let welcomeSignSprite = createHomeSprite(
 	appHeight / 5,
 	welcomeSign
 );
-welcomeSignSprite.scale.set(0.2);
+
+welcomeSignSprite.on('mouseover', () => {
+	welcomeSignSprite.tint = 0x8034eb;
+	welcomeSignSprite.rotation -= 0.4;
+});
+
+welcomeSignSprite.on('mouseout', () => {
+	welcomeSignSprite.tint = 0xffffff;
+	welcomeSignSprite.rotation = 0;
+});
+
+//welcome sprite swing attempt
+// welcomeSignSprite.vx = 1;
+// welcomeSignSprite.vy = 1;
+
+// function gameLoop() {
+// 	//Call this `gameLoop` function on the next screen refresh
+// 	//(which happens 60 times per second)
+// 	requestAnimationFrame(gameLoop);
+
+// 	//Move the cat
+// 	// if ((welcomeSignSprite.rotation = 0.2)) {
+// 	// 	welcomeSignSprite.rotation = -0.2;
+// 	// } else welcomeSignSprite.rotation = 0.2;
+// 	if (welcomeSignSprite.rotation !== 0.5) {
+// 		welcomeSignSprite.rotation += 0.05;
+// 	}
+
+// 	// if (welcomeSignSprite.rotation === 0.05) {
+// 	// 	setTimeout(() => {
+// 	// 		welcomeSignSprite.rotation -= 0.1;
+// 	// 	}, 1000);
+// 	// }
+// }
+
+// //Start the loop
+// gameLoop();
+
 app.stage.addChild(welcomeSignSprite);
 
-//export let aboutFolder = createItem(250, 400, pinkFolder, 'About Me');
 function createItem(x, y, texture, name) {
 	// create a sprite
 	const item = new PIXI.Container();
@@ -260,8 +293,7 @@ function createItem(x, y, texture, name) {
 	item.interactive = true;
 	// make hand appear on rollover
 	item.buttonMode = true;
-	// center anchor point
-	// item.anchor.set(0.5);
+	
 	// setup events
 	item
 		// events for drag start
@@ -337,6 +369,7 @@ function projDragEnd() {
 	// set the interaction data to null
 	this.data = null;
 }
+
 function resumeDragEnd() {
 	this.alpha = 1;
 	this.dragging = false;
@@ -346,7 +379,7 @@ function resumeDragEnd() {
 		Math.abs(newPosition.x - startclick.x) < 10 &&
 		Math.abs(newPosition.y - startclick.y) < 10
 	) {
-		Resume.openResumeLink();
+		Resume.openResLink();
 		this.visible = false;
 	}
 
@@ -387,4 +420,5 @@ app.stage.addChild(aboutContainer);
 export let headShotContainer = new PIXI.Container();
 app.stage.addChild(headShotContainer);
 export let resumeContainer = new PIXI.Container();
+resumeContainer.visible = false;
 app.stage.addChild(resumeContainer);

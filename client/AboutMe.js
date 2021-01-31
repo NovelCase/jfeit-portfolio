@@ -24,7 +24,7 @@ export default class AboutMe extends React.Component {
 		rect.filters = [blur];
 		aboutme.visible = false;
 		const topBar = new PIXI.Graphics();
-		topBar.beginFill(0x322174).drawRect(x, y, width, 30).endFill();
+		topBar.beginFill(0x1d0046).drawRect(x, y, width, 30).endFill();
 		const xButton = new PIXI.Graphics();
 		xButton
 			.beginFill(0xef6a9c)
@@ -36,9 +36,19 @@ export default class AboutMe extends React.Component {
 			popAbout.visible = false;
 			PixiApp.folderSpriteOne.visible = true;
 		});
+		xButton.on('tap', () => {
+			popAbout.visible = false;
+			PixiApp.folderSpriteOne.visible = true;
+		});
+		xButton.on('mouseover', () => {
+			xButton.tint = 0xe3cdfe;
+		});
+		xButton.on('mouseout', () => {
+			xButton.tint = 0xffffff;
+		});
 		aboutme.addChild(rect);
 		const apron = new PIXI.Sprite(
-			PIXI.Texture.from('/siteAssets/about/Apron.png')
+			PIXI.Texture.from('/siteAssets/about/newApron2.png')
 		);
 		const jackieNoah = new PIXI.Sprite(
 			PIXI.Texture.from('/siteAssets/about/JackieNoah.png')
@@ -50,7 +60,7 @@ export default class AboutMe extends React.Component {
 		apron.position.x = x + 100;
 		apron.position.y = height - 150;
 		apron.anchor.set(0.5);
-		apron.scale.set(0.1, 0.1);
+		apron.scale.set(0.5, 0.5);
 		aboutme.addChild(apron);
 		jackieNoah.position.x = width - 25;
 		jackieNoah.position.y = height - 100;
@@ -60,21 +70,21 @@ export default class AboutMe extends React.Component {
 		violin.position.x = width - 25;
 		violin.position.y = y + 100;
 		violin.anchor.set(0.5);
-		violin.scale.set(0.3);
+    violin.scale.set(0.3);
 		let titleStyle = {
-			fontFamily: 'Nunito Sans',
+			fontFamily: 'Gloria Hallelujah',
 			fontSize: 35,
 			fontWeight: 'bold',
 			wordWrap: true,
 			wordWrapWidth: (aboutme.width / 3) * 2,
 		};
 		let descriptionStyle = {
-			fontFamily: 'Nunito Sans',
+			fontFamily: 'Gloria Hallelujah',
 			fontSize: 23,
 			fontWeight: '300',
 			lineHeight: aboutme.height / 20,
 			wordWrap: true,
-			wordWrapWidth: (aboutme.width / 3) * 2,
+			wordWrapWidth: (aboutme.width / 3) * 1.5,
 		};
 
 		const title = new PIXI.Text('About Me', titleStyle);
