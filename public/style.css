@@ -3,12 +3,13 @@
 :root {
 }
 * {
-	font-family: 'Roboto Mono', monospace;
+	font-family: 'Gloria Hallelujah';
 }
 body {
 }
 #app {
 	max-width: 50%;
+	background-color: #e3cdfe;
 }
 #pixi {
 	/* position: absolute; */
@@ -19,4 +20,20 @@ body {
 #outerContainer {
 	display: flex;
 	flex-direction: row;
+}
+
+iframe {
+	z-index: 2;
+	position: absolute;
+}
+
+#loading {
+	z-index: 1;
+	height: 100%;
+	width: 100%;
+	position: relative;
+}
+
+#container {
+	display: flex;
 }
