@@ -62,7 +62,7 @@ export default class Spotify extends React.Component {
 							width={width / 4}
 							height={height}
 							// frameborder='0'
-							allowtransparency='true'
+							//allowtransparency='true'
 							allow='encrypted-media'
 						></iframe>
 						<img id='loading' src='https://i.ibb.co/TWhb20W/Loading.png' />

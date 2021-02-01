@@ -26,6 +26,7 @@ body {
 iframe {
 	z-index: 2;
 	position: absolute;
+	opacity: 1;
 }
 
 #loading {
@@ -33,6 +34,7 @@ iframe {
 	height: 100%;
 	width: 100%;
 	position: relative;
+	opacity: 0.7;
 }
 
 #container {

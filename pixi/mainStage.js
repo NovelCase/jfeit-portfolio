@@ -415,3 +415,15 @@ function resize() {
 		}
 	});
 }
+// function resize2() {
+// 	if (window.innerWidth / window.innerHeight >= ratio) {
+// 		var w = window.innerHeight * ratio;
+// 		var h = window.innerHeight;
+// 	} else {
+// 		var w = window.innerWidth;
+// 		var h = window.innerWidth / ratio;
+// 	}
+// 	renderer.view.style.width = w + 'px';
+// 	renderer.view.style.height = h + 'px';
+// }
+// window.onresize = resize2;
