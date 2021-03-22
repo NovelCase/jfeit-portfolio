@@ -24,7 +24,7 @@ export default class Resume extends React.Component {
 		const close = new PIXI.Graphics();
 		close
 			.beginFill(0xe5699d)
-			.drawCircle(x * 1.16, y * 1.85, 15)
+			.drawCircle(x * 1.16, y * 1.85, 10)
 			.endFill();
 		close.visible = true; //set to false when I have click functionality
 		close.interactive = true;
@@ -67,6 +67,7 @@ export default class Resume extends React.Component {
 		resumeClose.on('pointertap', () => {
 			PixiApp.resumeContainer.visible = false;
 			PixiApp.folderSpriteThree.visible = true;
+			PixiApp.shadow.visible = false;
 		});
 
 		const resumeTexture = PIXI.Texture.from(
@@ -98,7 +99,7 @@ export default class Resume extends React.Component {
 		const resumeSprite = this.createSprite(
 			resumeTexture,
 			resumeDetails.width,
-			resumeScroll.height * 1.9,
+			resumeScroll.height * 2.07,
 			0.5,
 			0.5
 		);

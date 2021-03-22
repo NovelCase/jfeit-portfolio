@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js';
 
 export default class HeadShot extends React.Component {
 	createPopUpRect(x, y, width, height) {
-		let closeSize = { x: x + 20, y: y + 16, radius: 12 };
+		let closeSize = { x: x + 20, y: y + 16, radius: 10 };
 		let barWidth = 30;
 		if (window.innerWidth < 1050) {
 			x *= 0.5;
@@ -21,7 +21,7 @@ export default class HeadShot extends React.Component {
 		const blur = new PIXI.filters.BlurFilter(3, 4);
 		rect.filters = [blur];
 		const bar = new PIXI.Graphics();
-		bar.beginFill(0x361876).drawRect(x, y, width, barWidth).endFill();
+		bar.beginFill(0x1d0046).drawRect(x, y, width, barWidth).endFill();
 		bar.visible = false; //set to false when I have click functionality
 		PixiApp.headShotContainer.addChild(bar);
 		const close = new PIXI.Graphics();
@@ -48,6 +48,7 @@ export default class HeadShot extends React.Component {
 		);
 
 		headshotClose.on('pointertap', () => {
+			PixiApp.shadow.visible = false;
 			PixiApp.headShotContainer.children.forEach((child) => {
 				child.visible = false;
 			});
@@ -97,11 +98,11 @@ export default class HeadShot extends React.Component {
 		}
 
 		/* TEXT */
-		const message = new PIXI.Text('Thanks for visiting!', stylePosition.style);
-		message.visible = false; //set to false when I have click functionality
-		message.position.x = stylePosition.messageX * 0.8;
-		message.position.y = stylePosition.messageY;
-		PixiApp.headShotContainer.addChild(message);
+		// const message = new PIXI.Text('Thanks for visiting!', stylePosition.style);
+		// message.visible = false; //set to false when I have click functionality
+		// message.position.x = stylePosition.messageX * 0.8;
+		// message.position.y = stylePosition.messageY;
+		// PixiApp.headShotContainer.addChild(message);
 
 		/* HEADSHOT */
 		const headshotTexture = new PIXI.Texture.from('siteAssets/Headshot.jpg');

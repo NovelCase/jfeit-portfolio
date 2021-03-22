@@ -23,8 +23,9 @@ export default class Spotify extends React.Component {
 		const spotifySprite = new Sprite(spotify);
 		spotifyContainer.addChild(spotifySprite);
 		spotifySprite.anchor.set(0.5);
-		spotifySprite.position.x = width / 4 + 400;
-		spotifySprite.position.y = height / 1.1;
+		// spotifySprite.position.x = width / 4 + 400;
+		spotifySprite.position.x = width / 4 + 100 + 2 * (PixiApp.dock.width / 4);
+		spotifySprite.position.y = height - 60;
 		spotifySprite.interactive = true;
 		spotifySprite.buttonMode = true;
 

@@ -6,13 +6,13 @@ import { text } from '../data';
 
 let projectScroll;
 export const openProjLink = () => {
-  PixiApp.projectContainer.visible = true;
+	PixiApp.projectContainer.visible = true;
 };
 export default class Project extends React.Component {
 	createPopUpRect(x, y, width, height) {
 		const rect = new PIXI.Graphics();
 		rect.beginFill(0xe3cdfe).drawRect(x, y, width, height).endFill();
-	
+
 		PixiApp.projectContainer.addChild(rect);
 		const blur = new PIXI.filters.BlurFilter(3, 4);
 		rect.filters = [blur];
@@ -21,7 +21,7 @@ export default class Project extends React.Component {
 			.beginFill(0x1d0046)
 			.drawRect(x, y, width, height / 22)
 			.endFill();
-		bar.visible = true; 
+		bar.visible = true;
 		PixiApp.projectContainer.addChild(bar);
 		const close = new PIXI.Graphics();
 		close
@@ -67,18 +67,19 @@ export default class Project extends React.Component {
 		return text;
 	}
 
-  componentDidMount() {
-    let [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
-      window.innerWidth / 8,
-      (window.innerHeight / 4) * 0.1,
-      (window.innerWidth / 4) * 3,
-      (window.innerHeight / 4) * 3.8
-    );
+	componentDidMount() {
+		let [projectPopUp, projectBar, projectClose] = this.createPopUpRect(
+			window.innerWidth / 8,
+			(window.innerHeight / 4) * 0.1,
+			(window.innerWidth / 4) * 3,
+			(window.innerHeight / 4) * 3.8
+		);
 
-    projectClose.on('pointertap', () => {
-      PixiApp.projectContainer.visible = false;
-      PixiApp.folderSpriteTwo.visible = true;
-    });
+		projectClose.on('pointertap', () => {
+			PixiApp.projectContainer.visible = false;
+			PixiApp.folderSpriteTwo.visible = true;
+			PixiApp.shadow.visible = false;
+		});
 
 		let projectTitle = new PIXI.Text('Projects', {
 			fontSize: 45,
@@ -89,30 +90,30 @@ export default class Project extends React.Component {
 		projectTitle.position.y = projectPopUp.height / 9;
 		PixiApp.projectContainer.addChild(projectTitle);
 
-    projectScroll = PixiApp.projectContainer.addChild(
-      new Scrollbox({
-        boxWidth: (projectPopUp.width / 4) * 3.6,
-        boxHeight: (projectPopUp.height / 4) * 3.2,
-      })
-    );
-    projectScroll.position.set(
-      projectPopUp.width / 4.55,
-      projectPopUp.height / 5
-    );
+		projectScroll = PixiApp.projectContainer.addChild(
+			new Scrollbox({
+				boxWidth: (projectPopUp.width / 4) * 3.6,
+				boxHeight: (projectPopUp.height / 4) * 3.2,
+			})
+		);
+		projectScroll.position.set(
+			projectPopUp.width / 4.55,
+			projectPopUp.height / 5
+		);
 
-    let projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
-    projectDetails
-      .beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
-      .drawRect(
-        0,
-        0,
-        (projectScroll.boxWidth / 2) * 1.977,
-        projectScroll.boxHeight * 2.4
-      )
-      .endFill();
-    projectScroll.update();
+		let projectDetails = projectScroll.content.addChild(new PIXI.Graphics());
+		projectDetails
+			.beginFill(0xe3cdfe, 0.25) /* 0xe3cdfe */
+			.drawRect(
+				0,
+				0,
+				(projectScroll.boxWidth / 2) * 1.977,
+				projectScroll.boxHeight * 2.4
+			)
+			.endFill();
+		projectScroll.update();
 
-    /* TEXTURES */
+		/* TEXTURES */
 
 		const weatherTexture = PIXI.Texture.from(
 			'siteAssets/projects/WeatherWatcher.png'
@@ -120,6 +121,7 @@ export default class Project extends React.Component {
 		const leafTexture = PIXI.Texture.from('siteAssets/projects/sketch-pad.png');
 		const spyTexture = PIXI.Texture.from('siteAssets/projects/SpyQL.png');
 		const woofTexture = PIXI.Texture.from('siteAssets/projects/Hallowoof.png');
+		const novelTexture = PIXI.Texture.from('siteAssets/projects/NovelCase.png');
 
 		/* WEATHER WATCHER */
 		const weatherWatcher = this.createSprite(
@@ -166,7 +168,7 @@ export default class Project extends React.Component {
 		weatherGithub.on('pointertap', () =>
 			window.open(text.weatherWatcher.linkOneUrl)
 		);
-		
+
 		const weatherWalkThrough = this.createText(
 			`  ${text.weatherWatcher.linkTwo}`,
 			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
@@ -177,6 +179,11 @@ export default class Project extends React.Component {
 		weatherWalkThrough.on('pointertap', () =>
 			window.open(text.weatherWatcher.linkTwoUrl)
 		);
+
+		weatherGithub.on('mouseover', () => weatherGithub.tint(0x1d0046));
+		weatherGithub.on('mouseout', () => weatherGithub.tint(0xffffff));
+		weatherWalkThrough.on('mouseover', () => weatherWalkThrough.tint(0x1d0046));
+		weatherWalkThrough.on('mouseout', () => weatherWalkThrough.tint(0xffffff));
 
 		/* SPYQL */
 		const spyQL = this.createSprite(
@@ -238,7 +245,6 @@ export default class Project extends React.Component {
 			spyLeaf.y * 1.2,
 			true
 		);
-		spyQLDeployed.on('pointertap', () => window.open(text.spyQL.linkThreeUrl));
 
 		/* HALLOWOOF */
 		const halloWoof = this.createSprite(
@@ -282,8 +288,9 @@ export default class Project extends React.Component {
 			hallowLeaf.y * 1.12,
 			true
 		);
-		halloWoofGithub.on('pointertap', () => window.open(text.hallowoof.linkOneUrl));
-	
+		halloWoofGithub.on('pointertap', () =>
+			window.open(text.hallowoof.linkOneUrl)
+		);
 
 		const halloWoofDeployed = this.createText(
 			`${text.hallowoof.linkTwo}`,
@@ -292,8 +299,64 @@ export default class Project extends React.Component {
 			hallowLeaf.y * 1.12,
 			true
 		);
-		halloWoofDeployed.on('pointertap', () => window.open(text.hallowoof.linkTwoUrl));
-	
+		halloWoofDeployed.on('pointertap', () =>
+			window.open(text.hallowoof.linkTwoUrl)
+		);
+
+		/* NovelCase */
+		const novelCase = this.createSprite(
+			novelTexture,
+			spyQL.x,
+			weatherWatcher.y * 8,
+			0.35
+		);
+
+		const novelLeaf = this.createSprite(
+			leafTexture,
+			spyLeaf.x,
+			novelCase.y,
+			0.7,
+			0.7
+		);
+
+		const novelTitle = this.createText(
+			text.novelCase.name,
+			{ fontSize: 25, fontFamily: 'Gloria Hallelujah' },
+			novelLeaf.x * 0.73,
+			novelLeaf.y * 0.96
+		);
+
+		const novelDescription = this.createText(
+			text.novelCase.description,
+			{
+				fontSize: 20,
+				fontFamily: 'Gloria Hallelujah',
+				wordWrap: true,
+				wordWrapWidth: projectDetails.width / 4,
+			},
+			novelLeaf.x * 0.5,
+			novelLeaf.y * 0.985
+		);
+
+		const novelGithub = this.createText(
+			text.novelCase.linkOne,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			novelLeaf.x * 0.4,
+			novelLeaf.y * 1.099,
+			true
+		);
+		novelGithub.on('pointertap', () => window.open(text.novelCase.linkOneUrl));
+
+		const novelDeployed = this.createText(
+			`${text.novelCase.linkTwo}`,
+			{ fontSize: 15, fontFamily: 'Gloria Hallelujah' },
+			novelLeaf.x * 1.4,
+			novelLeaf.y * 1.099,
+			true
+		);
+		novelDeployed.on('pointertap', () =>
+			window.open(text.novelCase.linkTwoUrl)
+		);
 	}
 	render() {
 		return <div></div>;
