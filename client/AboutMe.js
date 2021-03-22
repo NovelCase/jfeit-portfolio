@@ -35,10 +35,12 @@ export default class AboutMe extends React.Component {
 		xButton.on('click', () => {
 			popAbout.visible = false;
 			PixiApp.folderSpriteOne.visible = true;
+			PixiApp.shadow.visible = false;
 		});
 		xButton.on('tap', () => {
 			popAbout.visible = false;
 			PixiApp.folderSpriteOne.visible = true;
+			PixiApp.shadow.visible = false;
 		});
 		xButton.on('mouseover', () => {
 			xButton.tint = 0xe3cdfe;
@@ -70,7 +72,7 @@ export default class AboutMe extends React.Component {
 		violin.position.x = width - 25;
 		violin.position.y = y + 100;
 		violin.anchor.set(0.5);
-    violin.scale.set(0.3);
+		violin.scale.set(0.3);
 		let titleStyle = {
 			fontFamily: 'Gloria Hallelujah',
 			fontSize: 35,

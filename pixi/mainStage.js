@@ -135,27 +135,38 @@ topBarText.visible = true;
 topBarText.position.x = topBar.position.x + app.renderer.view.width * 0.01;
 topBarText.position.y = topBar.position.y + app.renderer.view.height * 0.01;
 topBarText.style.fill = 0xffffff;
-topBarText.interactive = true;
-topBarText.buttonMode = true;
+if (window.innerWidth > 1000) {
+	topBarText.interactive = true;
+	topBarText.buttonMode = true;
+	console.log('small');
+	console.log('inner width: ', window.innerWidth);
+} else if (window.innerWidth < 1000) {
+	topBarText.interactive = false;
+	topBarText.buttonMode = false;
+}
 homeContainer.addChild(topBarText);
-topBarText.on('pointertap', () => {
-	headShotContainer.children.forEach((child) => (child.visible = true));
-});
-topBarText.on('tap', () => {
-	headShotContainer.children.forEach((child) => (child.visible = true));
-});
+if (window.innerWidth > 1000) {
+	topBarText.on('pointertap', () => {
+		shadow.visible = true;
+		headShotContainer.children.forEach((child) => (child.visible = true));
+	});
+	topBarText.on('tap', () => {
+		shadow.visible = true;
+		headShotContainer.children.forEach((child) => (child.visible = true));
+	});
 
-topBarText.on('mouseover', () => {
-	topBarText.tint = 0x8034eb;
-});
-topBarText.on('mouseout', () => {
-	topBarText.tint = 0xffffff;
-});
+	topBarText.on('mouseover', () => {
+		topBarText.tint = 0x8034eb;
+	});
+	topBarText.on('mouseout', () => {
+		topBarText.tint = 0xffffff;
+	});
+}
 //dock
 let dock = new PIXI.Graphics();
 dock
 	.beginFill(0x726980)
-	.drawRect(appWidth / 3.5, appHeight / 1.02, appWidth * 0.4, appHeight / 15)
+	.drawRect(appWidth / 3.5, appHeight / 1.03, appWidth * 0.5, appHeight / 15)
 	.endFill();
 
 homeContainer.addChild(dock);
@@ -164,21 +175,21 @@ homeContainer.addChild(dock);
 
 let githubSprite = createHomeSprite(
 	app.renderer.view.width / 4 + 100,
-	app.renderer.view.height / 1.1,
+	appHeight - 60,
 	github,
 	'github'
 );
 
 let linkedInSprite = createHomeSprite(
-	app.renderer.view.width / 4 + 250,
-	app.renderer.view.height / 1.1,
+	githubSprite.position.x + dock.width / 4,
+	appHeight - 60,
 	linkedIn,
 	'linkedIn'
 );
 
 let gmailSprite = createHomeSprite(
-	app.renderer.view.width / 4 + 550,
-	app.renderer.view.height / 1.1,
+	linkedInSprite.position.x + 2 * (dock.width / 4),
+	appHeight - 60,
 	gmail,
 	'gmail'
 );
@@ -291,6 +302,7 @@ function createItem(x, y, texture, name) {
 	item.addChild(text);
 	return item;
 }
+
 function onPointerMove(event) {
 	this.rotation = 120;
 }
@@ -315,6 +327,7 @@ function aboutDragEnd() {
 		Math.abs(newPosition.y - startclick.y) < 10
 	) {
 		About.openLink();
+		shadow.visible = true;
 		this.visible = false;
 	}
 
@@ -330,8 +343,12 @@ function projDragEnd() {
 		Math.abs(newPosition.x - startclick.x) < 10 &&
 		Math.abs(newPosition.y - startclick.y) < 10
 	) {
-		Project.openProjLink();
-		this.visible = false;
+		if (window.innerWidth > 1000) {
+			Project.openProjLink();
+			shadow.visible = true;
+			this.visible = false;
+		} else if (window.innerWidth < 1000)
+			window.open('https://github.com/jackiefeit94', '_blank');
 	}
 
 	startclick = null;
@@ -347,8 +364,12 @@ function resumeDragEnd() {
 		Math.abs(newPosition.x - startclick.x) < 10 &&
 		Math.abs(newPosition.y - startclick.y) < 10
 	) {
-		Resume.openResLink();
-		this.visible = false;
+		if (window.innerWidth > 1000) {
+			Resume.openResLink();
+			shadow.visible = true;
+			this.visible = false;
+		} else if (window.innerWidth < 1000)
+			window.open('https://jackiefeit94.github.io/Resume/', '_blank');
 	}
 
 	startclick = null;
@@ -379,7 +400,13 @@ function onDragMove() {
 // app.stage.addChild(popUps);
 
 /** Pop Ups**/
-
+export let shadow = new PIXI.Graphics();
+shadow
+	.beginFill(0x000000, 0.65)
+	.drawRect(0, 0, app.renderer.view.width, app.renderer.view.height)
+	.endFill();
+shadow.visible = false;
+homeContainer.addChild(shadow);
 export let projectContainer = new PIXI.Container();
 megaContainer.addChild(projectContainer);
 projectContainer.visible = false;
@@ -415,3 +442,17 @@ function resize() {
 		}
 	});
 }
+// function resize2() {
+// 	if (window.innerWidth / window.innerHeight >= ratio) {
+// 		var w = window.innerHeight * ratio;
+// 		var h = window.innerHeight;
+// 	} else {
+// 		var w = window.innerWidth;
+// 		var h = window.innerWidth / ratio;
+// 	}
+// 	renderer.view.style.width = w + 'px';
+// 	renderer.view.style.height = h + 'px';
+// }
+// window.onresize = resize2;
+
+export { dock, linkedInSprite };
