@@ -12,6 +12,7 @@ app.use(morgan('dev'));
 
 app.get('*', (req, res, next) => {
 	res.sendFile(path.join(__dirname, '../public/index.html'));
+	location.reload(true);
 });
 
 app.use((req, res, next) => {
