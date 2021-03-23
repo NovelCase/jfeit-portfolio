@@ -23,8 +23,9 @@ export default class Spotify extends React.Component {
 		const spotifySprite = new Sprite(spotify);
 		spotifyContainer.addChild(spotifySprite);
 		spotifySprite.anchor.set(0.5);
-		spotifySprite.position.x = width / 4 + 400;
-		spotifySprite.position.y = height / 1.1;
+		// spotifySprite.position.x = width / 4 + 400;
+		spotifySprite.position.x = width / 4 + 100 + 2 * (PixiApp.dock.width / 4);
+		spotifySprite.position.y = height - 60;
 		spotifySprite.interactive = true;
 		spotifySprite.buttonMode = true;
 
@@ -56,14 +57,17 @@ export default class Spotify extends React.Component {
 		return (
 			<div>
 				{this.state.visible ? (
-					<iframe
-						src='https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl'
-						width={width / 4}
-						height={height}
-						// frameborder='0'
-						allowtransparency='true'
-						allow='encrypted-media'
-					></iframe>
+					<div id='container'>
+						<iframe
+							src='https://open.spotify.com/embed/playlist/4g5cH2RUqVMbQt9BzcaYEl'
+							width={width / 4}
+							height={height}
+							// frameborder='0'
+							//allowtransparency='true'
+							allow='encrypted-media'
+						></iframe>
+						<img id='loading' src='https://i.ibb.co/TWhb20W/Loading.png' />
+					</div>
 				) : (
 					<div />
 				)}

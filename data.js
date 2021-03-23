@@ -32,6 +32,16 @@ export let text = {
 		linkTwo: 'Deployed',
 		linkTwoUrl: 'https://hallowoof.herokuapp.com/',
 	},
+
+	novelCase: {
+		name: 'NovelCase',
+		description:
+			'Small but driven development team behind this and other websites, founded by Marie Crumpton, Leslie Meng, and me.',
+		linkOne: 'Github',
+		linkOneUrl: 'https://github.com/NovelCase',
+		linkTwo: 'Deployed',
+		linkTwoUrl: 'https://novelcase.netlify.app/',
+	},
 	linkedIn: {
 		link: 'https://www.linkedin.com/in/jackie-levine-feit/',
 	},
