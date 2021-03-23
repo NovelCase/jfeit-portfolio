@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(morgan('dev'));
 
 app.get('*', (req, res, next) => {
+	document.location.reload();
 	res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 

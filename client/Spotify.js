@@ -16,7 +16,6 @@ export default class Spotify extends React.Component {
 		this.onClickTap = this.onClickTap.bind(this);
 	}
 	componentDidMount() {
-		document.location.reload();
 		const spotify = PIXI.Texture.from('/siteAssets/welcome/Spotify-purp.png');
 		const spotifyHover = PIXI.Texture.from(
 			'/siteAssets/welcome/Spotify-inverted.png'
